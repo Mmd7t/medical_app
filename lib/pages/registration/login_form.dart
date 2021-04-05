@@ -88,8 +88,7 @@ class _LoginFormState extends State<LoginForm> {
                       Provider.of<DoctorProvider>(context, listen: false)
                           .switchDoctor();
                     }
-                    context
-                        .read<AuthProvider>()
+                    AuthProvider()
                         .signIn(email.trim(), password, context, authUserState);
                   }
                 },

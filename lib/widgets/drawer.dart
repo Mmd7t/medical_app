@@ -8,6 +8,7 @@ import 'package:medical_app/pages/foods_pages/forbidden_food.dart';
 import 'package:medical_app/pages/foods_pages/potassium_food.dart';
 import 'package:medical_app/pages/foods_pages/protien_food.dart';
 import 'package:medical_app/pages/home.dart';
+import 'package:medical_app/pages/messages/chat_messages.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +73,7 @@ class MyDrawer extends StatelessWidget {
                     ),
                     ListTile(
                       onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(ForbiddenFood.routeName),
+                          .pushReplacementNamed(ChatMessages.routeName),
                       title: const Text("الرسائل"),
                       leading: Icon(
                         Icons.message_outlined,
@@ -139,16 +140,14 @@ class MyDrawer extends StatelessWidget {
                       endIndent: 30,
                       indent: 30,
                     ),
-                    Builder(
-                      builder: (context) => ListTile(
-                        onTap: () {
-                          context.read<AuthProvider>().signOut();
-                        },
-                        title: const Text("تسجيل الخروج"),
-                        leading: Icon(
-                          Icons.exit_to_app_outlined,
-                          color: Theme.of(context).accentColor,
-                        ),
+                    ListTile(
+                      onTap: () {
+                        context.read<AuthProvider>().signOut();
+                      },
+                      title: const Text("تسجيل الخروج"),
+                      leading: Icon(
+                        Icons.exit_to_app_outlined,
+                        color: Theme.of(context).accentColor,
                       ),
                     ),
                   ],

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:medical_app/pages/calculate_water_page.dart';
+import 'package:medical_app/pages/messages/chat_messages.dart';
 import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:medical_app/pages/diagnosis_kidney_page.dart';
 import 'package:medical_app/pages/foods_pages/allowed_food.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
           LandingPage.routeName: (context) => LandingPage(),
           Home.routeName: (context) => Home(),
           ChatPage.routeName: (context) => ChatPage(),
+          ChatMessages.routeName: (context) => ChatMessages(),
           DoctorPage.routeName: (context) => DoctorPage(),
           TreatmentCenter.routeName: (context) => TreatmentCenter(),
           CalculateWaterPage.routeName: (context) => CalculateWaterPage(),

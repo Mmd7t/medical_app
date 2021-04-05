@@ -5,9 +5,17 @@ import 'package:medical_app/widgets/drawer.dart';
 
 import '../constants.dart';
 
-class DiagnosisKidneyPage extends StatelessWidget {
+class DiagnosisKidneyPage extends StatefulWidget {
   static const String routeName = 'diagnosisKidneyPage';
+
+  @override
+  _DiagnosisKidneyPageState createState() => _DiagnosisKidneyPageState();
+}
+
+class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  var val = 0;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -85,24 +93,92 @@ class DiagnosisKidneyPage extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          const SizedBox(height: 30),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 45)
                                 .copyWith(top: 20),
                             child: TextField(
+                              textAlign: TextAlign.center,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.all(10),
-                                hintText: 'بحث',
+                                hintText: 'ادخل وزنك',
                                 filled: true,
                                 fillColor: Constants.textFieldColor,
                                 hintStyle: const TextStyle(color: Colors.grey),
-                                prefixIcon: Icon(Icons.search,
-                                    color: Theme.of(context).primaryColor),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 45)
+                                .copyWith(top: 20),
+                            child: TextField(
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.all(10),
+                                hintText: 'ادخل وزنك',
+                                filled: true,
+                                fillColor: Constants.textFieldColor,
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              /*--------------------  1st Radio  --------------------*/
+                              Radio(
+                                value: 1,
+                                toggleable: true,
+                                groupValue: val,
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      val = value;
+                                    },
+                                  );
+                                },
+                              ),
+                              Text(
+                                "ذكر",
+                                style: GoogleFonts.elMessiri(
+                                  color: Constants.darkColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(width: 35),
+                              /*--------------------  3rd Radio  --------------------*/
+                              Radio(
+                                value: 3,
+                                toggleable: true,
+                                groupValue: val,
+                                onChanged: (value) {
+                                  setState(
+                                    () {
+                                      val = value;
+                                    },
+                                  );
+                                },
+                              ),
+                              Text(
+                                "انثى",
+                                style: GoogleFonts.elMessiri(
+                                  color: Constants.darkColor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                          MaterialButton(
+                            onPressed: () {},
                           ),
                         ],
                       ),
