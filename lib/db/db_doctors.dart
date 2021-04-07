@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
 
 import '../constants.dart';
@@ -16,12 +17,12 @@ class DoctorsDB extends DB {
   }
 
   @override
-  Stream<Users> getData() {
+  Stream<DoctorModel> getData() {
     return _db
         .collection(Constants.doctorsCollectionName)
         .doc(getId())
         .snapshots()
-        .map((event) => Users.fromMap(event.data()));
+        .map((event) => DoctorModel.fromMap(event.data()));
   }
 
   Stream<Users> getDoctor(id) {

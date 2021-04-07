@@ -45,7 +45,7 @@ class ChatsDB {
         .collection(Constants.chatsCollectionName)
         .doc(chatRoomId)
         .collection("chats")
-        .orderBy("ts", descending: true)
+        .orderBy("ts", descending: false)
         .snapshots();
   }
 

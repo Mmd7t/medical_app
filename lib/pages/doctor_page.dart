@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
+import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:provider/provider.dart';
 
 import 'messages/chat_page.dart';
 
@@ -13,6 +15,7 @@ class DoctorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var id = ModalRoute.of(context).settings.arguments;
+    var patient = Provider.of<Users>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -112,9 +115,29 @@ class DoctorPage extends StatelessWidget {
                                     const SizedBox(width: 10),
                                     FloatingActionButton(
                                       heroTag: 'chat',
-                                      onPressed: () => Navigator.of(context)
-                                          .pushNamed(ChatPage.routeName,
-                                              arguments: [id, user.name]),
+                                      onPressed: () {
+                                        var chatRoomId = ChatsDB()
+                                            .getChatRoomIdByUsernames(
+                                                user.username,
+                                                patient.username);
+                                        Map<String, dynamic> chatRoomInfoMap = {
+                                          "users": [
+                                            user.username,
+                                            patient.username
+                                          ]
+                                        };
+                                        ChatsDB().createChatRoom(
+                                            chatRoomId, chatRoomInfoMap);
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) => ChatPage(
+                                            id: id,
+                                            myUserName: patient.username,
+                                            otherUserName: user.username,
+                                            name: user.name,
+                                          ),
+                                        ));
+                                      },
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(15)),

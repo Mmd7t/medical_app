@@ -1,19 +1,168 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
-import 'package:medical_app/models/chat_messages.dart';
+import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/widgets/clippers.dart';
+import 'package:random_string/random_string.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   static const String routeName = 'chatPage';
+  final String id;
+  final String myUserName;
+  final String otherUserName;
+  final String name;
+
+  const ChatPage(
+      {Key key, this.id, this.myUserName, this.otherUserName, this.name})
+      : super(key: key);
+
+  @override
+  _ChatPageState createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
+  String chatRoomId, messageId = "";
+  Stream messageStream;
+  getInfo() {
+    chatRoomId = ChatsDB()
+        .getChatRoomIdByUsernames(widget.myUserName, widget.otherUserName);
+  }
+
+  TextEditingController messageTextEdittingController = TextEditingController();
+  addMessage(bool sendClicked) {
+    if (messageTextEdittingController.text != "") {
+      String message = messageTextEdittingController.text;
+
+      var lastMessageTs = DateTime.now();
+
+      Map<String, dynamic> messageInfoMap = {
+        "message": message,
+        "sendBy": widget.myUserName,
+        "ts": lastMessageTs,
+      };
+
+      //messageId
+      if (messageId == "") {
+        messageId = randomAlphaNumeric(12);
+      }
+
+      ChatsDB().addMessage(chatRoomId, messageId, messageInfoMap).then((value) {
+        Map<String, dynamic> lastMessageInfoMap = {
+          "lastMessage": message,
+          "lastMessageSendTs": lastMessageTs,
+          "lastMessageSendBy": widget.myUserName
+        };
+
+        ChatsDB().updateLastMessageSend(chatRoomId, lastMessageInfoMap);
+
+        if (sendClicked) {
+          // remove the text in the message input field
+          messageTextEdittingController.text = "";
+          // make message id blank to get regenerated on next message send
+          messageId = "";
+        }
+      });
+    }
+  }
+
+  Widget chatMessageTile(String message, bool sendByMe) {
+    return Row(
+      mainAxisAlignment:
+          sendByMe ? MainAxisAlignment.start : MainAxisAlignment.end,
+      children: [
+        Flexible(
+          child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(24),
+                  bottomRight:
+                      sendByMe ? Radius.circular(0) : Radius.circular(24),
+                  topRight: Radius.circular(24),
+                  bottomLeft:
+                      sendByMe ? Radius.circular(24) : Radius.circular(0),
+                ),
+                color: sendByMe ? Colors.blue : const Color(0xFFE7E7E7),
+              ),
+              padding: EdgeInsets.all(16),
+              child: Text(
+                message,
+                style:
+                    TextStyle(color: (sendByMe) ? Colors.white : Colors.black),
+              )),
+        ),
+      ],
+    );
+  }
+
+  chatsMessagess() {
+    return Expanded(
+      child: ClipPath(
+        clipper: ChatClipper(),
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Theme.of(context).accentColor,
+              Constants.color2,
+            ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(30),
+            ),
+          ),
+          padding: const EdgeInsets.only(bottom: 8, top: 3),
+          child: ClipPath(
+            clipper: ChatClipper(),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+              ),
+              child: StreamBuilder(
+                  stream: messageStream,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return ListView.builder(
+                        itemCount: snapshot.data.docs.length,
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot ds = snapshot.data.docs[index];
+                          return chatMessageTile(
+                              ds["message"], widget.myUserName == ds["sendBy"]);
+                        },
+                      );
+                    }
+                  }),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  getAndSetMessages() async {
+    messageStream = await ChatsDB().getChatRoomMessages(chatRoomId);
+    setState(() {});
+  }
+
+  doThisOnLaunch() async {
+    await getInfo();
+    getAndSetMessages();
+  }
+
+  @override
+  void initState() {
+    doThisOnLaunch();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List getData = ModalRoute.of(context).settings.arguments;
-    // var id = getData[0];
-    var name = getData[1];
     return Scaffold(
       body: Stack(
         children: [
@@ -40,7 +189,7 @@ class ChatPage extends StatelessWidget {
                         title: Hero(
                           tag: 'doctor name',
                           child: Text(
-                            'د / $name',
+                            'د / ${widget.name}',
                             style: GoogleFonts.elMessiri(
                               fontSize: Theme.of(context)
                                   .textTheme
@@ -76,75 +225,7 @@ class ChatPage extends StatelessWidget {
 /*-------------------------------------------------------------------------------------------------*/
 /*----------------------------------------  Chat Messages  ----------------------------------------*/
 /*-------------------------------------------------------------------------------------------------*/
-                          Expanded(
-                            child: ClipPath(
-                              clipper: ChatClipper(),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Theme.of(context).accentColor,
-                                        Constants.color2,
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight),
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(30),
-                                  ),
-                                ),
-                                padding:
-                                    const EdgeInsets.only(bottom: 8, top: 3),
-                                child: ClipPath(
-                                  clipper: ChatClipper(),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(30)),
-                                    ),
-                                    child: ListView.builder(
-                                      itemCount: messages.length,
-                                      shrinkWrap: true,
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 20),
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 8),
-                                          child: Align(
-                                            alignment:
-                                                (messages[index].messageType ==
-                                                        "receiver"
-                                                    ? Alignment.topLeft
-                                                    : Alignment.topRight),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                color: (messages[index]
-                                                            .messageType ==
-                                                        "receiver"
-                                                    ? Colors.grey.shade500
-                                                        .withOpacity(0.3)
-                                                    : Theme.of(context)
-                                                        .primaryColor),
-                                              ),
-                                              padding: const EdgeInsets.all(13),
-                                              child: Text(
-                                                messages[index].messageContent,
-                                                style: const TextStyle(
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          chatsMessagess(),
                           Container(
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             height: kBottomNavigationBarHeight + 5,
@@ -153,6 +234,7 @@ class ChatPage extends StatelessWidget {
                               children: <Widget>[
                                 Expanded(
                                   child: TextField(
+                                    controller: messageTextEdittingController,
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
@@ -172,7 +254,9 @@ class ChatPage extends StatelessWidget {
                                 const SizedBox(width: 5),
                                 FloatingActionButton(
                                   heroTag: 'chat',
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    addMessage(true);
+                                  },
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12)),
                                   backgroundColor:

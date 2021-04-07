@@ -24,6 +24,11 @@ class PatientsDB extends DB {
         .map((event) => Users.fromMap(event.data()));
   }
 
+  Stream<List<Users>> getAllPatients() {
+    return _db.collection(Constants.patientsCollectionName).snapshots().map(
+        (event) => event.docs.map((e) => Users.fromMap(e.data())).toList());
+  }
+
   @override
   getId() {
     return FirebaseAuth.instance.currentUser.uid;

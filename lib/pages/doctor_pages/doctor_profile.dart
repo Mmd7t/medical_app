@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/db/db_doctors.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
 import 'package:medical_app/providers/auth_provider.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
@@ -56,13 +57,13 @@ class DoctorProfile extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    StreamBuilder<Users>(
+                    StreamBuilder<DoctorModel>(
                         stream: DoctorsDB().getData(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return CircularProgressIndicator();
                           } else {
-                            Users user = snapshot.data;
+                            DoctorModel user = snapshot.data;
                             return Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,

@@ -55,6 +55,20 @@ class MyApp extends StatelessWidget {
           create: (context) => context.read<AuthProvider>().authStateChanges,
           initialData: null,
         ),
+/*----------------------------------------------------------------------------------------------*/
+/*----------------------------------  Patient Data Provider  -----------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        StreamProvider(
+          create: (context) => PatientsDB().getData(),
+          initialData: null,
+        ),
+/*----------------------------------------------------------------------------------------------*/
+/*-----------------------------------  Doctor Data Provider  -----------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        StreamProvider(
+          create: (context) => DoctorsDB().getData(),
+          initialData: null,
+        ),
       ],
       builder: (context, child) => child,
       child: MaterialApp(

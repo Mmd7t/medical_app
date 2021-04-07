@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/pages/main_template.dart';
-import 'package:medical_app/widgets/clippers.dart';
-import 'package:medical_app/widgets/drawer.dart';
 
 import '../../constants.dart';
 import 'treatment_details_page.dart';
