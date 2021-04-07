@@ -11,6 +11,9 @@ class ChatPage extends StatelessWidget {
   static const String routeName = 'chatPage';
   @override
   Widget build(BuildContext context) {
+    List getData = ModalRoute.of(context).settings.arguments;
+    // var id = getData[0];
+    var name = getData[1];
     return Scaffold(
       body: Stack(
         children: [
@@ -27,7 +30,7 @@ class ChatPage extends StatelessWidget {
                       color: Colors.transparent,
                       child: ListTile(
                         leading: CircleAvatar(
-                          maxRadius: 40,
+                          maxRadius: 25,
                           child: Hero(
                             tag: 'doctor img',
                             child: Image.asset('assets/doctor_1.png',
@@ -37,7 +40,7 @@ class ChatPage extends StatelessWidget {
                         title: Hero(
                           tag: 'doctor name',
                           child: Text(
-                            'د / محمد ماهر',
+                            'د / $name',
                             style: GoogleFonts.elMessiri(
                               fontSize: Theme.of(context)
                                   .textTheme
@@ -66,7 +69,7 @@ class ChatPage extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 7,
+                    flex: 10,
                     child: Container(
                       child: Column(
                         children: [
@@ -143,9 +146,8 @@ class ChatPage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.all(5)
-                                .copyWith(left: 10, right: 10),
-                            height: kBottomNavigationBarHeight + 10,
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            height: kBottomNavigationBarHeight + 5,
                             width: double.infinity,
                             child: Row(
                               children: <Widget>[

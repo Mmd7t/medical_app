@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:medical_app/providers/auth_provider.dart';
+import 'package:medical_app/providers/doctor_provider.dart';
+import 'package:provider/provider.dart';
+import '../../constants.dart';
 
-import 'messages/chat_page.dart';
-
-class DoctorPage extends StatelessWidget {
-  static const String routeName = 'doctorPage';
-
+class DoctorProfile extends StatelessWidget {
+  static const String routeName = 'doctorProfile';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var id = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: Stack(
         children: [
@@ -58,72 +57,36 @@ class DoctorPage extends StatelessWidget {
                 child: ListView(
                   children: [
                     StreamBuilder<Users>(
-                        stream: DoctorsDB().getDoctor(id),
+                        stream: DoctorsDB().getData(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
+                            return CircularProgressIndicator();
                           } else {
                             Users user = snapshot.data;
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Hero(
-                                      tag: 'doctor name',
-                                      child: Text(
-                                        'د / ${user.name}',
-                                        style: GoogleFonts.elMessiri(
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .headline6
-                                              .fontSize,
-                                          color: Constants.darkColor,
-                                          fontWeight: FontWeight.w900,
-                                        ),
-                                      ),
-                                    ),
-                                    Text(
-                                      'اخصائى جراحة',
-                                      style: GoogleFonts.elMessiri(
-                                        fontSize: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1
-                                            .fontSize,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  'د / ${user.name}',
+                                  style: GoogleFonts.elMessiri(
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .headline5
+                                        .fontSize,
+                                    color: Constants.darkColor,
+                                    fontWeight: FontWeight.w900,
+                                  ),
                                 ),
-                                Row(
-                                  children: [
-                                    FloatingActionButton(
-                                      heroTag: 'call',
-                                      onPressed: () {},
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      backgroundColor: Colors.green,
-                                      child: const Icon(Icons.call_outlined),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    FloatingActionButton(
-                                      heroTag: 'chat',
-                                      onPressed: () => Navigator.of(context)
-                                          .pushNamed(ChatPage.routeName,
-                                              arguments: [id, user.name]),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      backgroundColor:
-                                          Theme.of(context).accentColor,
-                                      child:
-                                          const Icon(Icons.messenger_rounded),
-                                    ),
-                                  ],
+                                Text(
+                                  'اخصائى جراحة',
+                                  style: GoogleFonts.elMessiri(
+                                    fontSize: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .fontSize,
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
                               ],
                             );
@@ -173,6 +136,15 @@ class DoctorPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.of(context).pop();
+          Provider.of<DoctorProvider>(context, listen: false).switchDoctor();
+          context.read<AuthProvider>().signOut();
+        },
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        label: Text('تسجيل خروج'),
       ),
     );
   }

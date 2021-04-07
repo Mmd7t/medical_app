@@ -1,20 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/constants.dart';
 import 'package:medical_app/pages/main_template.dart';
-import 'package:medical_app/pages/messages/chat_page.dart';
-import '../../constants.dart';
 
-class ChatMessages extends StatelessWidget {
-  static const String routeName = 'chatMessages';
+class DoctorHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return MainTemplate(
-      isHome: false,
-      title: 'الرسائل',
+      isHome: true,
+      userType: UserType.doctor,
+      title: 'مرضى الفشل الكلوى',
       child: SingleChildScrollView(
         child: Column(
           children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 45).copyWith(top: 20),
+              child: TextField(
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(10),
+                  hintText: 'بحث',
+                  filled: true,
+                  fillColor: Constants.textFieldColor,
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  prefixIcon:
+                      Icon(Icons.search, color: Theme.of(context).primaryColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -23,8 +41,8 @@ class ChatMessages extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: InkWell(
-                    onTap: () =>
-                        Navigator.of(context).pushNamed(ChatPage.routeName),
+                    onTap: () {},
+                    // Navigator.of(context).pushNamed(DoctorPage.routeName),
                     child: Card(
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -40,7 +58,7 @@ class ChatMessages extends StatelessWidget {
                               borderRadius: BorderRadius.circular(13),
                             ),
                             child: Image.asset(
-                              'assets/doctor_1.png',
+                              'assets/patient_1.png',
                               matchTextDirection: true,
                             ),
                           ),
@@ -50,7 +68,7 @@ class ChatMessages extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                'د / احمد ماهر',
+                                'يوسف على',
                                 style: GoogleFonts.elMessiri(
                                     fontSize: Theme.of(context)
                                         .textTheme
@@ -61,27 +79,12 @@ class ChatMessages extends StatelessWidget {
                               ),
                               const SizedBox(height: 6),
                               Text(
-                                'مستشفى الحياه',
-                                style: GoogleFonts.elMessiri(
-                                    color: Colors.grey.shade700),
-                              ),
-                              Text(
-                                '12 ص : 4 م',
+                                'فشل كلوى',
                                 style: GoogleFonts.elMessiri(
                                     color: Colors.grey.shade700),
                               ),
                             ],
                           ),
-                          const Spacer(),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star, color: Colors.amber[700]),
-                              const SizedBox(width: 3),
-                              const Text('4.6'),
-                            ],
-                          ),
-                          const SizedBox(width: 12),
                         ],
                       ),
                     ),

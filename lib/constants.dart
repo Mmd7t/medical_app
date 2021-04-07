@@ -6,6 +6,7 @@ class Constants {
   static const color2 = Color(0xFF09c6f9);
   static const String patientsCollectionName = 'patients';
   static const String doctorsCollectionName = 'doctors';
+  static const String chatsCollectionName = 'chats';
   static const String appName = 'مرضى الفشل الكلوى';
   static const List<String> foods = [
     'صدور الدجاج',
@@ -170,4 +171,5 @@ class Constants {
   ];
 }
 
+enum UserType { patient, doctor }
 enum AuthUserState { doctor, patient }

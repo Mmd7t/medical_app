@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/widgets/clippers.dart';
-import 'package:medical_app/widgets/drawer.dart';
-
+import 'package:medical_app/pages/main_template.dart';
 import '../constants.dart';
+import 'registration/sign_btn.dart';
 
 class DiagnosisKidneyPage extends StatefulWidget {
   static const String routeName = 'diagnosisKidneyPage';
@@ -13,184 +12,216 @@ class DiagnosisKidneyPage extends StatefulWidget {
 }
 
 class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   var val = 0;
-
+  double result;
+  String resultData, weight, age;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      key: _scaffoldKey,
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 100, right: 25),
-            color: Constants.textFieldColor,
-            alignment: Alignment.topRight,
-            child: Text(
-              'تشخيص الفشل الكلوى',
-              style: GoogleFonts.elMessiri(
-                fontSize: Theme.of(context).textTheme.headline5.fontSize,
-                color: Constants.darkColor,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ),
-          Positioned(
-            top: -(size.height * 0.18),
-            left: -(size.width * 0.45),
-            child: ClipOval(
-              child: Container(
-                padding: const EdgeInsets.only(left: 30),
-                width: size.width,
-                height: size.height * 0.3,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).accentColor,
-                      Constants.color2,
-                    ],
-                    begin: Alignment.bottomRight,
-                    end: Alignment.topLeft,
+    return MainTemplate(
+      isHome: false,
+      title: 'تشخيص الفشل الكلوى',
+      child: NotificationListener(
+        onNotification: (OverscrollIndicatorNotification notification) {
+          notification.disallowGlow();
+          return;
+        },
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 30),
+                Container(
+                  width: size.width * 0.4,
+                  height: size.width * 0.4,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context).accentColor,
+                        Constants.color2,
+                      ],
+                      begin: Alignment.bottomRight,
+                      end: Alignment.topLeft,
+                    ),
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '$resultData',
+                      style: GoogleFonts.elMessiri(
+                        fontSize: 16,
+                        color: Constants.darkColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          NestedScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            headerSliverBuilder: (context, isScolled) {
-              return [
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  automaticallyImplyLeading: false,
-                  collapsedHeight: 150,
-                  expandedHeight: 150,
-                  actions: [
-                    IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.menu_rounded),
-                      onPressed: () => _scaffoldKey.currentState.openDrawer(),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 45)
+                            .copyWith(top: 20),
+                        child: TextFormField(
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            hintText: 'ادخل وزنك',
+                            filled: true,
+                            fillColor: Constants.textFieldColor,
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك ادخل وزنك';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (newValue) {
+                            setState(() {
+                              weight = newValue;
+                            });
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 45)
+                            .copyWith(top: 20),
+                        child: TextFormField(
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            hintText: 'ادخل عمرك',
+                            filled: true,
+                            fillColor: Constants.textFieldColor,
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك ادخل عمرك';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (newValue) {
+                            setState(() {
+                              age = newValue;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    /*--------------------  1st Radio  --------------------*/
+                    Radio(
+                      value: 1,
+                      toggleable: true,
+                      groupValue: val,
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            val = value;
+                          },
+                        );
+                      },
+                    ),
+                    Text(
+                      "ذكر",
+                      style: GoogleFonts.elMessiri(
+                        color: Constants.darkColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 35),
+                    /*--------------------  3rd Radio  --------------------*/
+                    Radio(
+                      value: 2,
+                      toggleable: true,
+                      groupValue: val,
+                      onChanged: (value) {
+                        setState(
+                          () {
+                            val = value;
+                          },
+                        );
+                      },
+                    ),
+                    Text(
+                      "انثى",
+                      style: GoogleFonts.elMessiri(
+                        color: Constants.darkColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
-              ];
-            },
-            body: ClipPath(
-              clipper: MyClipper(),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Theme.of(context).accentColor,
-                    Constants.color2,
-                  ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-                ),
-                padding: const EdgeInsets.only(top: 10),
-                child: ClipPath(
-                  clipper: MyClipper(),
-                  child: Container(
-                    color: Colors.white,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 30),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 45)
-                                .copyWith(top: 20),
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(10),
-                                hintText: 'ادخل وزنك',
-                                filled: true,
-                                fillColor: Constants.textFieldColor,
-                                hintStyle: const TextStyle(color: Colors.grey),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
+                const SizedBox(height: 15),
+                Container(
+                  width: size.width * 0.4,
+                  child: SignBtn(
+                    text: 'احسب',
+                    onClicked: () {
+                      if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
+                        if (val == 0) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                              child: Text('من فضلك اختر نوع الجنس'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 45)
-                                .copyWith(top: 20),
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.all(10),
-                                hintText: 'ادخل وزنك',
-                                filled: true,
-                                fillColor: Constants.textFieldColor,
-                                hintStyle: const TextStyle(color: Colors.grey),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              /*--------------------  1st Radio  --------------------*/
-                              Radio(
-                                value: 1,
-                                toggleable: true,
-                                groupValue: val,
-                                onChanged: (value) {
-                                  setState(
-                                    () {
-                                      val = value;
-                                    },
-                                  );
-                                },
-                              ),
-                              Text(
-                                "ذكر",
-                                style: GoogleFonts.elMessiri(
-                                  color: Constants.darkColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(width: 35),
-                              /*--------------------  3rd Radio  --------------------*/
-                              Radio(
-                                value: 3,
-                                toggleable: true,
-                                groupValue: val,
-                                onChanged: (value) {
-                                  setState(
-                                    () {
-                                      val = value;
-                                    },
-                                  );
-                                },
-                              ),
-                              Text(
-                                "انثى",
-                                style: GoogleFonts.elMessiri(
-                                  color: Constants.darkColor,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                          MaterialButton(
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                        } else if (val == 1) {
+                          setState(() {
+                            result = ((140 - double.parse(age)) *
+                                    double.parse(weight)) *
+                                72;
+                            resultData = result.toStringAsFixed(2);
+                          });
+                        } else {
+                          setState(() {
+                            result = ((140 - double.parse(age)) *
+                                    double.parse(weight) *
+                                    0.58) *
+                                72;
+                            resultData = result.toStringAsFixed(2);
+                          });
+                        }
+                      }
+                    },
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
-      drawer: MyDrawer(),
     );
   }
 }

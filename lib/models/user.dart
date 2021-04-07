@@ -2,13 +2,13 @@ class Users {
   String id;
   String name;
   String email;
-  String phoneNum;
+  String username;
 
   Users({
     this.id,
     this.name,
     this.email,
-    this.phoneNum,
+    this.username,
   });
 
   factory Users.fromMap(Map<String, dynamic> data) {
@@ -16,7 +16,7 @@ class Users {
       id: data['id'],
       name: data['name'],
       email: data['email'],
-      phoneNum: data['phoneNum'],
+      username: data['username'],
     );
   }
 
@@ -25,7 +25,7 @@ class Users {
       'id': id,
       'name': name,
       'email': email,
-      'phoneNum': phoneNum,
+      'username': username,
     };
   }
 }

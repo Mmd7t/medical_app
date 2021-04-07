@@ -8,10 +8,10 @@ import 'db.dart';
 class DoctorsDB extends DB {
   FirebaseFirestore _db = FirebaseFirestore.instance;
   @override
-  Future<void> deleteData(user) async {
+  Future<void> deleteData(doctor) async {
     return await _db
         .collection(Constants.doctorsCollectionName)
-        .doc(user.id)
+        .doc(doctor.id)
         .delete();
   }
 
@@ -24,24 +24,44 @@ class DoctorsDB extends DB {
         .map((event) => Users.fromMap(event.data()));
   }
 
+  Stream<Users> getDoctor(id) {
+    return _db
+        .collection(Constants.doctorsCollectionName)
+        .doc(id)
+        .snapshots()
+        .map((event) => Users.fromMap(event.data()));
+  }
+
+  Stream<List<Users>> getAllDoctors() {
+    return _db.collection(Constants.doctorsCollectionName).snapshots().map(
+        (event) => event.docs.map((e) => Users.fromMap(e.data())).toList());
+  }
+
   @override
   getId() {
     return FirebaseAuth.instance.currentUser.uid;
   }
 
   @override
-  Future<void> saveData(user) async {
+  Future<void> saveData(doctor) async {
     return await _db
         .collection(Constants.doctorsCollectionName)
         .doc(getId())
-        .set(user.toMap());
+        .set(doctor.toMap());
   }
 
   @override
-  Future<void> updateData(user) async {
+  Future<void> updateData(doctor) async {
     return await _db
         .collection(Constants.doctorsCollectionName)
-        .doc(user.id)
-        .update(user.toMap());
+        .doc(doctor.id)
+        .update(doctor.toMap());
+  }
+
+  Stream<QuerySnapshot> getDoctorByName(name) {
+    return _db
+        .collection(Constants.doctorsCollectionName)
+        .where('name', isEqualTo: name)
+        .snapshots();
   }
 }

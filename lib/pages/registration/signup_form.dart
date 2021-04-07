@@ -16,7 +16,7 @@ class SignupForm extends StatefulWidget {
 
 class _SignupFormState extends State<SignupForm> {
   final formKey = GlobalKey<FormState>();
-  String email, password, name, phoneNum;
+  String email, password, name, username;
   AuthUserState authUserState = AuthUserState.patient;
 
   @override
@@ -35,7 +35,7 @@ class _SignupFormState extends State<SignupForm> {
               borderRadius: 10,
               validator: (String value) {
                 if (value.isEmpty) {
-                  return 'من فضلك ادخل الايميل';
+                  return 'من فضلك ادخل الاسم';
                 }
               },
               onSaved: (value) {
@@ -49,17 +49,17 @@ class _SignupFormState extends State<SignupForm> {
 /*--------------------------------------  Phone Num  ---------------------------------------*/
 /*------------------------------------------------------------------------------------------*/
             GlobalTextField(
-              hint: 'رقم المحمول',
+              hint: 'اسم المستخدم',
               prefixIcon: Icons.phone_outlined,
               borderRadius: 10,
               validator: (String value) {
                 if (value.isEmpty) {
-                  return 'من فضلك ادخل الايميل';
+                  return 'من فضلك ادخل اسم المستخدم';
                 }
               },
               onSaved: (value) {
                 setState(() {
-                  phoneNum = value;
+                  username = value;
                 });
               },
             ),
@@ -133,7 +133,7 @@ class _SignupFormState extends State<SignupForm> {
                       Provider.of<DoctorProvider>(context, listen: false)
                           .switchDoctor();
                     }
-                    context.read<AuthProvider>().signUp(name, phoneNum,
+                    context.read<AuthProvider>().signUp(name, username,
                         email.trim(), password, context, authUserState);
                   }
                 },

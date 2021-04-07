@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:provider/provider.dart';
+import 'doctor_pages/doctor_home.dart';
 import 'registration/registration.dart';
 
 class LandingPage extends StatelessWidget {
@@ -13,7 +14,7 @@ class LandingPage extends StatelessWidget {
     final firebaseUser = context.watch<User>();
     if (firebaseUser != null) {
       if (isDoctor.doctor) {
-        return Scaffold(body: Center(child: Text("Doctor Page")));
+        return DoctorHome();
       }
       return Home();
     }

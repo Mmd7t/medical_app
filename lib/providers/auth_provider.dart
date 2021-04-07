@@ -26,15 +26,15 @@ class AuthProvider implements Auth {
 /*----------------------------------------------------------------------------------------*/
   @override
   signUp(
-      name, phonrNum, email, pass, context, AuthUserState authUserState) async {
+      name, username, email, pass, context, AuthUserState authUserState) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: pass);
       if (authUserState == AuthUserState.doctor) {
         await _doctorsDB.saveData(
-            Users(id: getUID(), name: name, email: email, phoneNum: phonrNum));
+            Users(id: getUID(), name: name, email: email, username: username));
       } else {
         await _patientsDB.saveData(
-            Users(id: getUID(), name: name, email: email, phoneNum: phonrNum));
+            Users(id: getUID(), name: name, email: email, username: username));
       }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
