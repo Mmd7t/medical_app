@@ -31,6 +31,8 @@ class _SignupFormState extends State<SignupForm> {
 /*------------------------------------------------------------------------------------------*/
             GlobalTextField(
               hint: 'الاسم',
+              textInputAction: TextInputAction.next,
+              textInputType: TextInputType.name,
               prefixIcon: Icons.person_outline,
               borderRadius: 10,
               validator: (String value) {
@@ -50,7 +52,9 @@ class _SignupFormState extends State<SignupForm> {
 /*------------------------------------------------------------------------------------------*/
             GlobalTextField(
               hint: 'اسم المستخدم',
-              prefixIcon: Icons.phone_outlined,
+              textInputAction: TextInputAction.next,
+              textInputType: TextInputType.name,
+              prefixIcon: Icons.person_outline,
               borderRadius: 10,
               validator: (String value) {
                 if (value.isEmpty) {
@@ -69,6 +73,8 @@ class _SignupFormState extends State<SignupForm> {
 /*------------------------------------------------------------------------------------------*/
             GlobalTextField(
               hint: 'الايميل',
+              textInputAction: TextInputAction.next,
+              textInputType: TextInputType.emailAddress,
               prefixIcon: Icons.email_outlined,
               borderRadius: 10,
               validator: (String value) {
@@ -92,6 +98,8 @@ class _SignupFormState extends State<SignupForm> {
               builder: (context, obscure, child) {
                 return GlobalTextField(
                   hint: 'الرقم السرى',
+                  textInputAction: TextInputAction.done,
+                  textInputType: TextInputType.visiblePassword,
                   prefixIcon: Icons.lock_outline,
                   isObscure: obscure.obscure2,
                   borderRadius: 10,

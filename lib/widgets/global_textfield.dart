@@ -10,6 +10,8 @@ class GlobalTextField extends StatelessWidget {
   final String label;
   final Function validator;
   final Function onSaved;
+  final TextInputAction textInputAction;
+  final TextInputType textInputType;
 
   const GlobalTextField({
     Key key,
@@ -21,15 +23,18 @@ class GlobalTextField extends StatelessWidget {
     this.borderRadius = 60,
     this.onSaved,
     this.label,
+    this.textInputAction,
+    this.textInputType,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: isObscure ?? false,
+      textInputAction: textInputAction,
+      keyboardType: textInputType,
       decoration: InputDecoration(
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+        contentPadding: const EdgeInsets.symmetric(vertical: 16),
         hintText: hint,
         labelText: label,
         filled: true,

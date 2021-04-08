@@ -47,6 +47,7 @@ class DoctorHome extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   } else {
                     List<Users> listOfPatients = snapshot.data;
+                    print(listOfPatients.length);
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),

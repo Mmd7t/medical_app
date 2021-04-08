@@ -82,15 +82,13 @@ class MainTemplate extends StatelessWidget {
                           ),
                         ]
                       : [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: IconButton(
-                              color: Colors.white,
-                              icon: const Icon(Icons.person_outline_rounded,
-                                  size: 35),
-                              onPressed: () => Navigator.of(context)
-                                  .pushNamed(DoctorProfile.routeName),
-                            ),
+                          IconButton(
+                            padding: const EdgeInsets.only(left: 25, top: 15),
+                            color: Colors.white,
+                            icon: const Icon(Icons.person_outline_rounded,
+                                size: 35),
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(DoctorProfile.routeName),
                           ),
                         ],
                 ),

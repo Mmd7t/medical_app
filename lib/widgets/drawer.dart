@@ -54,15 +54,6 @@ class MyDrawer extends StatelessWidget {
                     );
                   }
                 }),
-            // ListTile(
-            //   onTap: () => Navigator.of(context)
-            //       .pushReplacementNamed(Home.routeName),
-            //   title: const Text("الأطباء"),
-            //   leading: Icon(
-            //     Icons.person_outline,
-            //     color: Theme.of(context).accentColor,
-            //   ),
-            // ),
             ListTile(
               onTap: () =>
                   Navigator.of(context).pushNamed(TreatmentCenter.routeName),
@@ -72,15 +63,25 @@ class MyDrawer extends StatelessWidget {
                 color: Theme.of(context).accentColor,
               ),
             ),
-            ListTile(
-              onTap: () =>
-                  Navigator.of(context).pushNamed(ChatMessages.routeName),
-              title: const Text("الرسائل"),
-              leading: Icon(
-                Icons.message_outlined,
-                color: Theme.of(context).accentColor,
-              ),
-            ),
+            StreamBuilder<Object>(
+                stream: PatientsDB().getData(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    Users user = snapshot.data;
+                    return ListTile(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              ChatMessages(userName: user.username))),
+                      title: const Text("الرسائل"),
+                      leading: Icon(
+                        Icons.message_outlined,
+                        color: Theme.of(context).accentColor,
+                      ),
+                    );
+                  }
+                }),
             ListTile(
               onTap: () =>
                   Navigator.of(context).pushNamed(CalculateWaterPage.routeName),

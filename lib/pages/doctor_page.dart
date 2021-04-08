@@ -33,6 +33,19 @@ class DoctorPage extends StatelessWidget {
               ),
             ),
           ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(

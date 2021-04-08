@@ -57,19 +57,18 @@ class ChatsDB {
     }
   }
 
-  // Future<Stream<QuerySnapshot>> getChatRooms() async {
-  //   String myUsername = await SharedPreferenceHelper().getUserName();
-  //   return FirebaseFirestore.instance
-  //       .collection("chatrooms")
-  //       .orderBy("lastMessageSendTs", descending: true)
-  //       .where("users", arrayContains: myUsername)
-  //       .snapshots();
-  // }
-
-  Future<QuerySnapshot> getUserInfo(String username) async {
-    return await FirebaseFirestore.instance
-        .collection("users")
-        .where("username", isEqualTo: username)
-        .get();
+  Future<Stream<QuerySnapshot>> getChatRooms(userName) async {
+    return _db
+        .collection(Constants.chatsCollectionName)
+        .orderBy("lastMessageSendTs", descending: false)
+        .where("users", arrayContains: userName)
+        .snapshots();
   }
+
+  // Future<QuerySnapshot> getUserInfo(String username) async {
+  //   return await _db
+  //       .collection("users")
+  //       .where("username", isEqualTo: username)
+  //       .get();
+  // }
 }

@@ -124,7 +124,7 @@ class _ChatPageState extends State<ChatPage> {
                   stream: messageStream,
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
+                      return Center(child: CircularProgressIndicator());
                     } else {
                       return ListView.builder(
                         itemCount: snapshot.data.docs.length,

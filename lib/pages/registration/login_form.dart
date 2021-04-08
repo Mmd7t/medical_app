@@ -28,6 +28,8 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             GlobalTextField(
               hint: 'الايميل',
+              textInputAction: TextInputAction.next,
+              textInputType: TextInputType.emailAddress,
               prefixIcon: Icons.email_outlined,
               borderRadius: 10,
               validator: (String value) {
@@ -50,6 +52,8 @@ class _LoginFormState extends State<LoginForm> {
               builder: (context, obscure, child) {
                 return GlobalTextField(
                   hint: 'الرقم السرى',
+                  textInputAction: TextInputAction.done,
+                  textInputType: TextInputType.visiblePassword,
                   prefixIcon: Icons.lock_outline,
                   isObscure: obscure.obscure1,
                   borderRadius: 10,

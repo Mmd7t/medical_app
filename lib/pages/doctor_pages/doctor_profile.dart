@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/doctor_model.dart';
-import 'package:medical_app/models/user.dart';
 import 'package:medical_app/providers/auth_provider.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +21,25 @@ class DoctorProfile extends StatelessWidget {
             height: size.height / 2,
             color: Constants.textFieldColor,
             alignment: Alignment.topRight,
+            padding: const EdgeInsets.only(top: 10),
             child: Hero(
               tag: 'doctor img',
               child: Image.asset(
                 'assets/doctor_1.png',
                 matchTextDirection: true,
+              ),
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
               ),
             ),
           ),

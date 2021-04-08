@@ -106,17 +106,21 @@ class AuthProvider implements Auth {
   showDialoge(context, child) {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
-        return Dialog(
+        return AlertDialog(
           elevation: 0.0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: 50,
-            child: child,
-          ),
+          title: const Text('حدث خطأ'),
+          content: Text(child, textAlign: TextAlign.center),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('حسنا'),
+            ),
+          ],
         );
       },
     );
