@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/pages/main_template.dart';
-
+import 'package:medical_app/db/shared_helper.dart';
+import 'package:medical_app/widgets/main_template.dart';
 import '../constants.dart';
 import 'registration/sign_btn.dart';
 
@@ -14,9 +14,20 @@ class CalculateWaterPage extends StatefulWidget {
 
 class _CalculateWaterPageState extends State<CalculateWaterPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  String water = 'حساب عدد أكواب الماء';
+  String water;
   String weight;
   double result = 0;
+  getData() async {
+    water = await SharedHelper.getFromPrefs('water') ?? 'حساب عدد أكواب الماء';
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -113,10 +124,14 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                     onClicked: () {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
+                        SharedHelper.saveToPrefs(
+                            'water', result.toStringAsFixed(2));
                         setState(() {
                           result = (30 * double.parse(weight)) / 250;
                           water = result.toStringAsFixed(2);
                         });
+                        SharedHelper.saveToPrefs(
+                            'water', result.toStringAsFixed(2));
                       }
                     },
                   ),

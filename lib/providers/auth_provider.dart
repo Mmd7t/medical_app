@@ -24,6 +24,7 @@ class AuthProvider implements Auth {
 /*----------------------------------------------------------------------------------------*/
 /*--------------------------------------  Sign Up  ---------------------------------------*/
 /*----------------------------------------------------------------------------------------*/
+
   @override
   signUp(
       name, username, email, pass, context, AuthUserState authUserState) async {
@@ -39,18 +40,19 @@ class AuthProvider implements Auth {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'email-already-in-use':
-          showDialoge(context, const Text("هذا الايميل مستخدم من قبل"));
+          showDialoge(context, "هذا الايميل مستخدم من قبل");
           break;
         case 'operation-not-allowed':
-          showDialoge(context, const Text("الخدمة غير فعالة الآن"));
+          showDialoge(context, "الخدمة غير فعالة الآن");
           break;
         case 'invalid-email':
-          showDialoge(context, const Text("ايميل غير صحيح"));
+          showDialoge(context, "ايميل غير صحيح");
           break;
         case 'weak-password':
-          showDialoge(context, const Text("الرقم السرى ضعيف"));
+          showDialoge(context, "الرقم السرى ضعيف");
           break;
         default:
+          showDialoge(context, "حدث خطأ\nمن فضلك حاول التسجيل مرة اخرى");
           break;
       }
     } catch (e) {
@@ -68,18 +70,19 @@ class AuthProvider implements Auth {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':
-          showDialoge(context, const Text("المستخدم غير موجود"));
+          showDialoge(context, "المستخدم غير موجود");
           break;
         case 'wrong-password':
-          showDialoge(context, const Text("خطأ فى ادخال الرقم السرى"));
+          showDialoge(context, "خطأ فى ادخال الرقم السرى");
           break;
         case 'invalid-email':
-          showDialoge(context, const Text("الايميل غير صحيح"));
+          showDialoge(context, "الايميل غير صحيح");
           break;
         case 'user-disabled':
-          showDialoge(context, const Text("تم مسح هذا المستخدم"));
+          showDialoge(context, "تم مسح هذا المستخدم");
           break;
         default:
+          showDialoge(context, "حدث خطأ\nمن فضلك حاول التسجيل مرة اخرى");
           break;
       }
     } catch (e) {
@@ -90,10 +93,7 @@ class AuthProvider implements Auth {
 /*----------------------------------------------------------------------------------------*/
 /*------------------------------------  Auth State  --------------------------------------*/
 /*----------------------------------------------------------------------------------------*/
-  Stream<User> get authStateChanges {
-    print('Authhhhhhhhhhhhhhhhhh :::: ${_auth.authStateChanges()}');
-    return _auth.authStateChanges();
-  }
+  Stream<User> get authStateChanges => _auth.authStateChanges();
 
 /*----------------------------------------------------------------------------------------*/
 /*--------------------------------------  Sign out  --------------------------------------*/
@@ -118,7 +118,7 @@ class AuthProvider implements Auth {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('حسنا'),
+              child: const Text('حسنا'),
             ),
           ],
         );

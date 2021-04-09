@@ -5,7 +5,7 @@ import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/db/db_patients.dart';
 import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
-import 'package:medical_app/pages/main_template.dart';
+import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:provider/provider.dart';
 

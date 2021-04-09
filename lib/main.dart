@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/db/db_patients.dart';
 import 'package:medical_app/pages/calculate_water_page.dart';
+import 'package:medical_app/pages/doctor_page.dart';
 import 'package:medical_app/pages/doctor_pages/doctor_profile.dart';
 import 'package:medical_app/pages/messages/chat_messages.dart';
 import 'package:medical_app/pages/messages/chat_page.dart';

@@ -4,7 +4,7 @@ import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/user.dart';
 import 'package:medical_app/pages/doctor_page.dart';
-import 'package:medical_app/pages/main_template.dart';
+import 'package:medical_app/widgets/main_template.dart';
 
 class Home extends StatelessWidget {
   static const String routeName = 'patientHome';

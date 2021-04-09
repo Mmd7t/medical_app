@@ -46,7 +46,8 @@ class MyDrawer extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(60))),
                         currentAccountPicture: CircleAvatar(
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor: Constants.textFieldColor,
+                          backgroundImage: AssetImage('assets/app_logo.png'),
                         ),
                         accountName: Text(user.name),
                         accountEmail: Text(user.email),
@@ -133,6 +134,15 @@ class MyDrawer extends StatelessWidget {
               title: const Text("الأغذية الممنوعة"),
               leading: Icon(
                 Icons.no_food_outlined,
+                color: Theme.of(context).accentColor,
+              ),
+            ),
+            ListTile(
+              onTap: () =>
+                  Navigator.of(context).pushNamed(ForbiddenFood.routeName),
+              title: const Text("نصائح عامة"),
+              leading: Icon(
+                Icons.privacy_tip_outlined,
                 color: Theme.of(context).accentColor,
               ),
             ),

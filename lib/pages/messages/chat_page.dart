@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
+import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:medical_app/widgets/clippers.dart';
+import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
@@ -75,24 +77,24 @@ class _ChatPageState extends State<ChatPage> {
       children: [
         Flexible(
           child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  bottomRight:
-                      sendByMe ? Radius.circular(0) : Radius.circular(24),
-                  topRight: Radius.circular(24),
-                  bottomLeft:
-                      sendByMe ? Radius.circular(24) : Radius.circular(0),
-                ),
-                color: sendByMe ? Colors.blue : const Color(0xFFE7E7E7),
+            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4).copyWith(
+                left: (sendByMe) ? 60 : 16, right: (sendByMe) ? 16 : 60),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+                bottomRight:
+                    sendByMe ? Radius.circular(0) : Radius.circular(24),
+                topRight: Radius.circular(24),
+                bottomLeft: sendByMe ? Radius.circular(24) : Radius.circular(0),
               ),
-              padding: EdgeInsets.all(16),
-              child: Text(
-                message,
-                style:
-                    TextStyle(color: (sendByMe) ? Colors.white : Colors.black),
-              )),
+              color: sendByMe ? Colors.blue : const Color(0xFFE7E7E7),
+            ),
+            padding: EdgeInsets.all(16),
+            child: Text(
+              message,
+              style: TextStyle(color: (sendByMe) ? Colors.white : Colors.black),
+            ),
+          ),
         ),
       ],
     );
@@ -133,7 +135,9 @@ class _ChatPageState extends State<ChatPage> {
                         itemBuilder: (context, index) {
                           DocumentSnapshot ds = snapshot.data.docs[index];
                           return chatMessageTile(
-                              ds["message"], widget.myUserName == ds["sendBy"]);
+                            ds["message"],
+                            widget.myUserName == ds["sendBy"],
+                          );
                         },
                       );
                     }
@@ -163,6 +167,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    var isDoctor = Provider.of<DoctorProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -182,14 +187,19 @@ class _ChatPageState extends State<ChatPage> {
                           maxRadius: 25,
                           child: Hero(
                             tag: 'doctor img',
-                            child: Image.asset('assets/doctor_1.png',
+                            child: Image.asset(
+                                (isDoctor.doctor)
+                                    ? 'assets/patient_1.png'
+                                    : 'assets/doctor_1.png',
                                 matchTextDirection: true),
                           ),
                         ),
                         title: Hero(
                           tag: 'doctor name',
                           child: Text(
-                            'د / ${widget.name}',
+                            (isDoctor.doctor)
+                                ? '${widget.name}'
+                                : 'د / ${widget.name}',
                             style: GoogleFonts.elMessiri(
                               fontSize: Theme.of(context)
                                   .textTheme

@@ -5,12 +5,10 @@ import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/user.dart';
 import 'package:provider/provider.dart';
-
 import 'messages/chat_page.dart';
 
 class DoctorPage extends StatelessWidget {
   static const String routeName = 'doctorPage';
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -53,10 +51,14 @@ class DoctorPage extends StatelessWidget {
               width: size.width,
               height: size.height * 0.7,
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Theme.of(context).accentColor,
-                  Constants.color2,
-                ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).accentColor,
+                    Constants.color2,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(35),
                 ),

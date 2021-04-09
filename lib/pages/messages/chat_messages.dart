@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:medical_app/pages/main_template.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
+
+import '../../constants.dart';
+import 'chat_page.dart';
 
 class ChatMessages extends StatefulWidget {
   static const String routeName = 'chatMessages';
@@ -28,6 +32,7 @@ class _ChatMessagesState extends State<ChatMessages> {
   @override
   void initState() {
     onScreenLoaded();
+    print('userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr   ${widget.userName}');
     super.initState();
   }
 
@@ -58,73 +63,6 @@ class _ChatMessagesState extends State<ChatMessages> {
                         DocumentSnapshot ds = snapshot.data.docs[index];
                         return ChatRoomListTile(
                             ds["lastMessage"], ds.id, widget.userName);
-                        // return Padding(
-                        //   padding: const EdgeInsets.all(5.0),
-                        //   child: InkWell(
-                        //     onTap: () => Navigator.of(context)
-                        //         .pushNamed(ChatPage.routeName),
-                        //     child: Card(
-                        //       elevation: 2,
-                        //       shape: RoundedRectangleBorder(
-                        //           borderRadius: BorderRadius.circular(15)),
-                        //       child: Row(
-                        //         children: [
-                        //           Container(
-                        //             margin: const EdgeInsets.all(10),
-                        //             width: size.width * 0.3,
-                        //             height: size.width * 0.3,
-                        //             decoration: BoxDecoration(
-                        //               color: Colors.white,
-                        //               borderRadius: BorderRadius.circular(13),
-                        //             ),
-                        //             child: Image.asset(
-                        //               'assets/doctor_1.png',
-                        //               matchTextDirection: true,
-                        //             ),
-                        //           ),
-                        //           const SizedBox(width: 10),
-                        //           Column(
-                        //             crossAxisAlignment: CrossAxisAlignment.start,
-                        //             mainAxisSize: MainAxisSize.min,
-                        //             children: [
-                        //               Text(
-                        //                 'د / احمد ماهر',
-                        //                 style: GoogleFonts.elMessiri(
-                        //                     fontSize: Theme.of(context)
-                        //                         .textTheme
-                        //                         .headline6
-                        //                         .fontSize,
-                        //                     color: Constants.darkColor,
-                        //                     fontWeight: FontWeight.bold),
-                        //               ),
-                        //               const SizedBox(height: 6),
-                        //               Text(
-                        //                 'مستشفى الحياه',
-                        //                 style: GoogleFonts.elMessiri(
-                        //                     color: Colors.grey.shade700),
-                        //               ),
-                        //               Text(
-                        //                 '12 ص : 4 م',
-                        //                 style: GoogleFonts.elMessiri(
-                        //                     color: Colors.grey.shade700),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //           const Spacer(),
-                        //           Row(
-                        //             mainAxisSize: MainAxisSize.min,
-                        //             children: [
-                        //               Icon(Icons.star, color: Colors.amber[700]),
-                        //               const SizedBox(width: 3),
-                        //               const Text('4.6'),
-                        //             ],
-                        //           ),
-                        //           const SizedBox(width: 12),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
                       },
                     );
                   }
@@ -147,57 +85,98 @@ class ChatRoomListTile extends StatefulWidget {
 class _ChatRoomListTileState extends State<ChatRoomListTile> {
   String name = "", username = "";
 
-  // getThisUserInfo() async {
-  //   username =
-  //       widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
-  //   QuerySnapshot querySnapshot = await ChatsDB().getUserInfo(username);
-  //   print(
-  //       "something bla bla ${querySnapshot.docs[0].id} ${querySnapshot.docs[0]["name"]}  ${querySnapshot.docs[0]["imgUrl"]}");
-  //   name = "${querySnapshot.docs[0]["name"]}";
-  //   profilePicUrl = "${querySnapshot.docs[0]["imgUrl"]}";
-  //   setState(() {});
-  // }
+  getThisUserInfo() async {
+    username =
+        widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
+    QuerySnapshot querySnapshot = await ChatsDB().getUserInfo(username);
+    name = "${querySnapshot.docs[0]["name"]}";
+    setState(() {});
+  }
 
   @override
   void initState() {
-    // getThisUserInfo();
+    getThisUserInfo();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => ChatPage(username, name)));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          children: [
-            // ClipRRect(
-            //   borderRadius: BorderRadius.circular(30),
-            //   child: Image.network(
-            //     profilePicUrl,
-            //     height: 40,
-            //     width: 40,
-            //   ),
-            // ),
-            SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(fontSize: 16),
+    var size = MediaQuery.of(context).size;
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: InkWell(
+        onTap: () {
+          var chatRoomId =
+              ChatsDB().getChatRoomIdByUsernames(username, widget.myUsername);
+          Map<String, dynamic> chatRoomInfoMap = {
+            "users": [username, widget.myUsername]
+          };
+          ChatsDB().createChatRoom(chatRoomId, chatRoomInfoMap);
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ChatPage(
+              // id: id,
+              myUserName: widget.myUsername,
+              otherUserName: username,
+              name: name,
+            ),
+          ));
+        },
+        child: Card(
+          elevation: 2,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10),
+                width: size.width * 0.3,
+                height: size.width * 0.3,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(13),
                 ),
-                SizedBox(height: 3),
-                Text(widget.lastMessage)
-              ],
-            )
-          ],
+                child: Image.asset(
+                  'assets/doctor_1.png',
+                  matchTextDirection: true,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    name ?? '',
+                    style: GoogleFonts.elMessiri(
+                        fontSize:
+                            Theme.of(context).textTheme.headline6.fontSize - 2,
+                        color: Constants.darkColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 6),
+                  SizedBox(
+                    width: size.width * 0.4,
+                    child: Text(
+                      '${widget.lastMessage} ',
+                      style: GoogleFonts.elMessiri(color: Colors.grey.shade700),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              // CircleAvatar(
+              //   backgroundColor: Colors.red,
+              //   child: Text(
+              //     '1',
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              //   maxRadius: 13,
+              // ),
+              // const SizedBox(width: 12),
+            ],
+          ),
         ),
       ),
     );

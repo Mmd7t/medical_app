@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/pages/main_template.dart';
+import 'package:medical_app/widgets/main_template.dart';
 import '../constants.dart';
 import 'registration/sign_btn.dart';
 
@@ -15,7 +15,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   var val = 0;
   double result;
-  String resultData, weight, age;
+  String resultData, weight, age, keratin;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -71,7 +71,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45)
-                            .copyWith(top: 20),
+                            .copyWith(top: 8),
                         child: TextFormField(
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -101,7 +101,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45)
-                            .copyWith(top: 20),
+                            .copyWith(top: 8),
                         child: TextFormField(
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
@@ -129,10 +129,40 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           },
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 45)
+                            .copyWith(top: 8),
+                        child: TextFormField(
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            hintText: 'ادخل الكرياتين',
+                            filled: true,
+                            fillColor: Constants.textFieldColor,
+                            hintStyle: const TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'من فضلك ادخل الكرياتين';
+                            } else {
+                              return null;
+                            }
+                          },
+                          onSaved: (newValue) {
+                            setState(() {
+                              keratin = newValue;
+                            });
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -157,7 +187,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                       ),
                     ),
                     const SizedBox(width: 35),
-                    /*--------------------  3rd Radio  --------------------*/
+                    /*--------------------  2nd Radio  --------------------*/
                     Radio(
                       value: 2,
                       toggleable: true,
@@ -179,7 +209,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 10),
                 Container(
                   width: size.width * 0.4,
                   child: SignBtn(
@@ -191,7 +221,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           showDialog(
                             context: context,
                             builder: (context) => Dialog(
-                              child: Text('من فضلك اختر نوع الجنس'),
+                              child: const Text('من فضلك اختر نوع الجنس'),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -200,16 +230,16 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                         } else if (val == 1) {
                           setState(() {
                             result = ((140 - double.parse(age)) *
-                                    double.parse(weight)) *
-                                72;
+                                    double.parse(weight)) /
+                                (double.parse(keratin) * 72);
                             resultData = result.toStringAsFixed(2);
                           });
                         } else {
                           setState(() {
                             result = ((140 - double.parse(age)) *
                                     double.parse(weight) *
-                                    0.58) *
-                                72;
+                                    0.58) /
+                                (double.parse(keratin) * 72);
                             resultData = result.toStringAsFixed(2);
                           });
                         }

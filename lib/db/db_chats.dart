@@ -49,9 +49,17 @@ class ChatsDB {
         .snapshots();
   }
 
+  int start = 0;
+  int end = 1;
   getChatRoomIdByUsernames(String a, String b) {
-    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    if (a.substring(start, end).codeUnitAt(0) >
+        b.substring(start, end).codeUnitAt(0)) {
       return "$b\_$a";
+    } else if (a.substring(start, end).codeUnitAt(0) ==
+        b.substring(start, end).codeUnitAt(0)) {
+      start++;
+      end++;
+      return getChatRoomIdByUsernames(a, b);
     } else {
       return "$a\_$b";
     }
@@ -60,11 +68,17 @@ class ChatsDB {
   Future<Stream<QuerySnapshot>> getChatRooms(userName) async {
     return _db
         .collection(Constants.chatsCollectionName)
-        .orderBy("lastMessageSendTs", descending: false)
+        // .orderBy("lastMessageSendTs", descending: true)
         .where("users", arrayContains: userName)
         .snapshots();
   }
 
+  Future<QuerySnapshot> getUserInfo(String username) async {
+    return await _db
+        .collection(Constants.doctorsCollectionName)
+        .where("username", isEqualTo: username)
+        .get();
+  }
   // Future<QuerySnapshot> getUserInfo(String username) async {
   //   return await _db
   //       .collection("users")

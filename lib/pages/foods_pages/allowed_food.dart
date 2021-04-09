@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/pages/main_template.dart';
+import 'package:medical_app/widgets/main_template.dart';
 import '../../constants.dart';
 
 class AllowedFood extends StatelessWidget {

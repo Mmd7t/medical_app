@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
-import '../../constants.dart';
+
+import '../constants.dart';
 
 class ForbiddenFood extends StatelessWidget {
   static const String routeName = 'forbiddenFood';
@@ -9,7 +10,7 @@ class ForbiddenFood extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainTemplate(
       isHome: false,
-      title: 'الأغذية الممنوعة',
+      title: 'نصائح عامة',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
