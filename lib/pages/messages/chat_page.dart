@@ -210,15 +210,6 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                           ),
                         ),
-                        subtitle: Text(
-                          'متصل',
-                          style: GoogleFonts.elMessiri(
-                            fontSize:
-                                Theme.of(context).textTheme.bodyText1.fontSize,
-                            color: Colors.amber[700],
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                         trailing: IconButton(
                           icon: Icon(Icons.arrow_forward_ios_outlined),
                           color: Theme.of(context).accentColor,

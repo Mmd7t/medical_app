@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/db/db_doctors.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:medical_app/providers/rate_provider.dart';
+import 'package:medical_app/widgets/doctor_rate.dart';
 import 'package:provider/provider.dart';
 import 'messages/chat_page.dart';
 
@@ -75,13 +79,13 @@ class DoctorPage extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    StreamBuilder<Users>(
+                    StreamBuilder<DoctorModel>(
                         stream: DoctorsDB().getDoctor(id),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Center(child: CircularProgressIndicator());
                           } else {
-                            Users user = snapshot.data;
+                            DoctorModel doctor = snapshot.data;
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -93,7 +97,7 @@ class DoctorPage extends StatelessWidget {
                                     Hero(
                                       tag: 'doctor name',
                                       child: Text(
-                                        'د / ${user.name}',
+                                        'د / ${doctor.name}',
                                         style: GoogleFonts.elMessiri(
                                           fontSize: Theme.of(context)
                                               .textTheme
@@ -133,11 +137,11 @@ class DoctorPage extends StatelessWidget {
                                       onPressed: () {
                                         var chatRoomId = ChatsDB()
                                             .getChatRoomIdByUsernames(
-                                                user.username,
+                                                doctor.username,
                                                 patient.username);
                                         Map<String, dynamic> chatRoomInfoMap = {
                                           "users": [
-                                            user.username,
+                                            doctor.username,
                                             patient.username
                                           ]
                                         };
@@ -148,8 +152,8 @@ class DoctorPage extends StatelessWidget {
                                           builder: (context) => ChatPage(
                                             id: id,
                                             myUserName: patient.username,
-                                            otherUserName: user.username,
-                                            name: user.name,
+                                            otherUserName: doctor.username,
+                                            name: doctor.name,
                                           ),
                                         ));
                                       },
@@ -171,15 +175,18 @@ class DoctorPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              color: (index == 4)
-                                  ? Constants.darkColor.withOpacity(0.4)
-                                  : Colors.amber[700],
-                            ),
+                        Selector<RateProvider, double>(
+                          selector: (context, rate) => rate.val,
+                          builder: (context, value, child) => RatingBar(
+                            rating: value,
+                            icon: const Icon(Icons.star,
+                                size: 26, color: Colors.grey),
+                            starCount: 5,
+                            spacing: 4.0,
+                            size: 20,
+                            isIndicator: true,
+                            allowHalfRating: false,
+                            color: Colors.amber[600],
                           ),
                         ),
                         const Text('( 2420  تقييم )'),
@@ -211,6 +218,35 @@ class DoctorPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              titleTextStyle: GoogleFonts.elMessiri(
+                color: Constants.darkColor,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+              title: const Text('تقييم الدكتور'),
+              content: DoctorRate(),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('قيم'),
+                ),
+              ],
+            ),
+          );
+        },
+        label: const Text('تقييم'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

@@ -73,9 +73,16 @@ class ChatsDB {
         .snapshots();
   }
 
-  Future<QuerySnapshot> getUserInfo(String username) async {
+  Future<QuerySnapshot> getDoctorInfo(String username) async {
     return await _db
         .collection(Constants.doctorsCollectionName)
+        .where("username", isEqualTo: username)
+        .get();
+  }
+
+  Future<QuerySnapshot> getPatientInfo(String username) async {
+    return await _db
+        .collection(Constants.patientsCollectionName)
         .where("username", isEqualTo: username)
         .get();
   }

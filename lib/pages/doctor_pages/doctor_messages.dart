@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
 
 import '../../constants.dart';
-import 'chat_page.dart';
 
-class ChatMessages extends StatefulWidget {
+class DoctorMessages extends StatefulWidget {
   static const String routeName = 'chatMessages';
   final String userName;
 
-  const ChatMessages({Key key, this.userName}) : super(key: key);
+  const DoctorMessages({Key key, this.userName}) : super(key: key);
 
   @override
-  _ChatMessagesState createState() => _ChatMessagesState();
+  _DoctorMessagesState createState() => _DoctorMessagesState();
 }
 
-class _ChatMessagesState extends State<ChatMessages> {
+class _DoctorMessagesState extends State<DoctorMessages> {
   Stream usersStream, chatRoomsStream;
 
   getChatRooms() async {
@@ -38,8 +38,6 @@ class _ChatMessagesState extends State<ChatMessages> {
 
   @override
   Widget build(BuildContext context) {
-    // var size = MediaQuery.of(context).size;
-    // var userName = ModalRoute.of(context).settings.arguments;
     return MainTemplate(
       isHome: false,
       title: 'الرسائل',
@@ -88,7 +86,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
   getThisUserInfo() async {
     username =
         widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
-    QuerySnapshot querySnapshot = await ChatsDB().getDoctorInfo(username);
+    QuerySnapshot querySnapshot = await ChatsDB().getPatientInfo(username);
     name = "${querySnapshot.docs[0]["name"]}";
     setState(() {});
   }
@@ -136,7 +134,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                   borderRadius: BorderRadius.circular(13),
                 ),
                 child: Image.asset(
-                  'assets/doctor_1.png',
+                  'assets/patient_1.png',
                   matchTextDirection: true,
                 ),
               ),

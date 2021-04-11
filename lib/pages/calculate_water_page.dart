@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/db/shared_helper.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../constants.dart';
 import 'registration/sign_btn.dart';
@@ -14,19 +15,10 @@ class CalculateWaterPage extends StatefulWidget {
 
 class _CalculateWaterPageState extends State<CalculateWaterPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  String water;
+  String water = 'data';
   String weight;
   double result = 0;
-  getData() async {
-    water = await SharedHelper.getFromPrefs('water') ?? 'حساب عدد أكواب الماء';
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
+  CrossFadeState crossFadeState = CrossFadeState.showFirst;
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +58,31 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                       color: Colors.white,
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      water,
-                      style: GoogleFonts.elMessiri(
-                        fontSize: 16,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.bold,
+                    child: AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 2000),
+                      reverseDuration: const Duration(milliseconds: 2000),
+                      firstChild: Text(
+                        'حساب عدد أكواب الماء',
+                        style: GoogleFonts.elMessiri(
+                          fontSize: 16,
+                          color: Constants.darkColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
+                      secondChild: Text(
+                        water,
+                        style: GoogleFonts.elMessiri(
+                          fontSize: 22,
+                          color: Constants.darkColor,
+                          fontWeight: FontWeight.w900,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      alignment: Alignment.center,
+                      firstCurve: Curves.easeInOutBack,
+                      secondCurve: Curves.easeInOutBack,
+                      crossFadeState: crossFadeState,
                     ),
                   ),
                 ),
@@ -87,6 +96,7 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                     key: _formKey,
                     child: TextFormField(
                       textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(10),
                         hintText: 'ادخل وزنك',
@@ -124,14 +134,17 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                     onClicked: () {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
-                        SharedHelper.saveToPrefs(
-                            'water', result.toStringAsFixed(2));
                         setState(() {
                           result = (30 * double.parse(weight)) / 250;
-                          water = result.toStringAsFixed(2);
+                          water = result.toStringAsFixed(0);
+                          crossFadeState = CrossFadeState.showSecond;
                         });
-                        SharedHelper.saveToPrefs(
-                            'water', result.toStringAsFixed(2));
+
+                        Timer(const Duration(seconds: 3), () {
+                          setState(() {
+                            crossFadeState = CrossFadeState.showFirst;
+                          });
+                        });
                       }
                     },
                   ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/pages/doctor_pages/doctor_profile.dart';
 import 'package:medical_app/widgets/clippers.dart';
-import 'package:medical_app/widgets/drawer.dart';
+import 'package:medical_app/widgets/doctor_drawer.dart';
+import 'package:medical_app/widgets/patient_drawer.dart';
 import '../constants.dart';
 
 class MainTemplate extends StatelessWidget {
@@ -69,28 +69,17 @@ class MainTemplate extends StatelessWidget {
                   automaticallyImplyLeading: false,
                   collapsedHeight: (isHome) ? 200 : 150,
                   expandedHeight: (isHome) ? 200 : 150,
-                  actions: (userType == UserType.patient)
-                      ? [
-                          IconButton(
-                            color: Colors.white,
-                            icon: (isHome)
-                                ? const Icon(Icons.menu_rounded)
-                                : const Icon(Icons.arrow_forward_ios_rounded),
-                            onPressed: (isHome)
-                                ? () => _scaffoldKey.currentState.openDrawer()
-                                : () => Navigator.of(context).pop(),
-                          ),
-                        ]
-                      : [
-                          IconButton(
-                            padding: const EdgeInsets.only(left: 25, top: 15),
-                            color: Colors.white,
-                            icon: const Icon(Icons.person_outline_rounded,
-                                size: 35),
-                            onPressed: () => Navigator.of(context)
-                                .pushNamed(DoctorProfile.routeName),
-                          ),
-                        ],
+                  actions: [
+                    IconButton(
+                      color: Colors.white,
+                      icon: (isHome)
+                          ? const Icon(Icons.menu_rounded)
+                          : const Icon(Icons.arrow_forward_ios_rounded),
+                      onPressed: (isHome)
+                          ? () => _scaffoldKey.currentState.openDrawer()
+                          : () => Navigator.of(context).pop(),
+                    ),
+                  ],
                 ),
               ];
             },
@@ -116,7 +105,7 @@ class MainTemplate extends StatelessWidget {
           ),
         ],
       ),
-      drawer: (userType == UserType.patient) ? MyDrawer() : null,
+      drawer: (userType == UserType.patient) ? PatientDrawer() : DoctorDrawer(),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/db/db_patients.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/pages/calculate_water_page.dart';
 import 'package:medical_app/pages/doctor_page.dart';
 import 'package:medical_app/pages/doctor_pages/doctor_profile.dart';
@@ -20,9 +21,11 @@ import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';
 import 'package:medical_app/providers/obscure_provider.dart';
+import 'package:medical_app/providers/rate_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/doctor_page.dart';
+import 'pages/global_advices_page.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/auth_provider.dart';
 
@@ -64,12 +67,30 @@ class MyApp extends StatelessWidget {
           initialData: null,
         ),
 /*----------------------------------------------------------------------------------------------*/
+/*----------------------------------  Patient Data Provider  -----------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        StreamProvider(
+          create: (context) => PatientsDB().getAllPatients(),
+          initialData: null,
+        ),
+/*----------------------------------------------------------------------------------------------*/
+/*----------------------------------  Doctor Data Provider  ------------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        StreamProvider<List<DoctorModel>>(
+          create: (context) => DoctorsDB().getAllDoctors(),
+          initialData: null,
+        ),
+/*----------------------------------------------------------------------------------------------*/
 /*-----------------------------------  Doctor Data Provider  -----------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider(
           create: (context) => DoctorsDB().getData(),
           initialData: null,
         ),
+/*----------------------------------------------------------------------------------------------*/
+/*-----------------------------------  Doctor Rate Provider  -----------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider(create: (context) => RateProvider()),
       ],
       builder: (context, child) => child,
       child: MaterialApp(
@@ -104,6 +125,7 @@ class MyApp extends StatelessWidget {
           DiagnosisKidneyPage.routeName: (context) => DiagnosisKidneyPage(),
           TreatmentDetailsPage.routeName: (context) => TreatmentDetailsPage(),
           DoctorProfile.routeName: (context) => DoctorProfile(),
+          GlobalAdvicesPage.routeName: (context) => GlobalAdvicesPage(),
         },
       ),
     );

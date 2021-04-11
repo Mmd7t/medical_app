@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/models/doctor_model.dart';
-import 'package:medical_app/providers/auth_provider.dart';
-import 'package:medical_app/providers/doctor_provider.dart';
-import 'package:provider/provider.dart';
 import '../../constants.dart';
 
 class DoctorProfile extends StatelessWidget {
@@ -151,15 +148,15 @@ class DoctorProfile extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).pop();
-          Provider.of<DoctorProvider>(context, listen: false).switchDoctor();
-          context.read<AuthProvider>().signOut();
-        },
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        label: Text('تسجيل خروج'),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () {
+      //     Navigator.of(context).pop();
+      //     Provider.of<DoctorProvider>(context, listen: false).switchDoctor();
+      //     context.read<AuthProvider>().signOut();
+      //   },
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      //   label: Text('تسجيل خروج'),
+      // ),
     );
   }
 }

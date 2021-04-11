@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
@@ -13,9 +15,12 @@ class DiagnosisKidneyPage extends StatefulWidget {
 
 class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  CrossFadeState crossFadeState = CrossFadeState.showFirst;
   var val = 0;
   double result;
-  String resultData, weight, age, keratin;
+  String protien = '';
+  String level = '';
+  String resultData = 'تشخيص الفشل الكلوى', weight, age, keratin;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -54,14 +59,31 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                       color: Colors.white,
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      '$resultData',
-                      style: GoogleFonts.elMessiri(
-                        fontSize: 16,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.bold,
+                    child: AnimatedCrossFade(
+                      duration: const Duration(milliseconds: 800),
+                      reverseDuration: const Duration(milliseconds: 800),
+                      alignment: Alignment.center,
+                      firstCurve: Curves.easeInOutBack,
+                      secondCurve: Curves.easeInOutBack,
+                      crossFadeState: crossFadeState,
+                      firstChild: Text(
+                        '$resultData',
+                        style: GoogleFonts.elMessiri(
+                          fontSize: 16,
+                          color: Constants.darkColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
+                      secondChild: Text(
+                        '$level\nكمية البروتين\n$protien',
+                        style: GoogleFonts.elMessiri(
+                          fontSize: 16,
+                          color: Constants.darkColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
@@ -73,6 +95,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10),
@@ -103,6 +126,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10),
@@ -133,6 +157,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.all(10),
@@ -232,7 +257,12 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                             result = ((140 - double.parse(age)) *
                                     double.parse(weight)) /
                                 (double.parse(keratin) * 72);
-                            resultData = result.toStringAsFixed(2);
+                            showInfo(result);
+                            crossFadeState = CrossFadeState.showSecond;
+                          });
+                          Timer(const Duration(seconds: 3), () {
+                            setState(() =>
+                                crossFadeState = CrossFadeState.showFirst);
                           });
                         } else {
                           setState(() {
@@ -240,7 +270,12 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                                     double.parse(weight) *
                                     0.58) /
                                 (double.parse(keratin) * 72);
-                            resultData = result.toStringAsFixed(2);
+                            showInfo(result);
+                            crossFadeState = CrossFadeState.showSecond;
+                          });
+                          Timer(const Duration(seconds: 3), () {
+                            setState(() =>
+                                crossFadeState = CrossFadeState.showFirst);
                           });
                         }
                       }
@@ -253,5 +288,34 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
         ),
       ),
     );
+  }
+
+  showInfo(result) {
+    if (result < 15) {
+      // setState(() {
+      protien = '1.2-1.3 جرام';
+      level = 'المرحلة الخامسة';
+      // });
+    } else if (result >= 15 && result < 30) {
+      // setState(() {
+      protien = '0.5-0.6 جرام';
+      level = 'المرحلة الرابعة';
+      // });
+    } else if (result >= 30 && result < 60) {
+      // setState(() {
+      protien = '0.5-0.6 جرام';
+      level = 'المرحلة الثالثة';
+      // });
+    } else if (result >= 60 && result < 90) {
+      // setState(() {
+      protien = '0.8-1 جرام';
+      level = 'المرحلة الثانية';
+      // });
+    } else if (result >= 90) {
+      // setState(() {
+      protien = '0.8-1 جرام';
+      level = 'المرحلة الاولى';
+      // });
+    }
   }
 }

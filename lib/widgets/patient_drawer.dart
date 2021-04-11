@@ -7,6 +7,7 @@ import 'package:medical_app/pages/foods_pages/allowed_food.dart';
 import 'package:medical_app/pages/foods_pages/forbidden_food.dart';
 import 'package:medical_app/pages/foods_pages/potassium_food.dart';
 import 'package:medical_app/pages/foods_pages/protien_food.dart';
+import 'package:medical_app/pages/global_advices_page.dart';
 import 'package:medical_app/pages/messages/chat_messages.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/providers/auth_provider.dart';
@@ -14,7 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
-class MyDrawer extends StatelessWidget {
+class PatientDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -139,7 +140,7 @@ class MyDrawer extends StatelessWidget {
             ),
             ListTile(
               onTap: () =>
-                  Navigator.of(context).pushNamed(ForbiddenFood.routeName),
+                  Navigator.of(context).pushNamed(GlobalAdvicesPage.routeName),
               title: const Text("نصائح عامة"),
               leading: Icon(
                 Icons.privacy_tip_outlined,

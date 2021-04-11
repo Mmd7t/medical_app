@@ -4,8 +4,8 @@ import 'package:medical_app/widgets/main_template.dart';
 
 import '../constants.dart';
 
-class ForbiddenFood extends StatelessWidget {
-  static const String routeName = 'forbiddenFood';
+class GlobalAdvicesPage extends StatelessWidget {
+  static const String routeName = 'globalAdvicesPage';
   @override
   Widget build(BuildContext context) {
     return MainTemplate(
@@ -20,9 +20,9 @@ class ForbiddenFood extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ...List.generate(
-                  Constants.forbeddinFood.length,
+                  Constants.advices.length,
                   (index) => Text(
-                    Constants.forbeddinFood[index],
+                    Constants.advices[index],
                     style: GoogleFonts.elMessiri(
                         height: 1.7,
                         fontSize:
