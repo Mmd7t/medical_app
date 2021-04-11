@@ -3,23 +3,21 @@ import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
-import 'package:medical_app/db/db_doctors.dart';
+import 'package:medical_app/db/db_patients.dart';
 import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:medical_app/providers/rate_provider.dart';
 import 'package:medical_app/widgets/doctor_rate.dart';
 import 'package:provider/provider.dart';
-import 'messages/chat_page.dart';
 
-class DoctorPage extends StatelessWidget {
-  static const String routeName = 'doctorPage';
-
+class PatientProfilePage extends StatelessWidget {
+  static const String routeName = 'patientProfilePage';
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var id = ModalRoute.of(context).settings.arguments;
-    var patient = Provider.of<Users>(context);
-    var rating = Provider.of<RateProvider>(context);
+    var doctor = Provider.of<DoctorModel>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -29,12 +27,9 @@ class DoctorPage extends StatelessWidget {
             height: size.height / 2,
             color: Constants.textFieldColor,
             alignment: Alignment.topRight,
-            child: Hero(
-              tag: 'doctor img',
-              child: Image.asset(
-                'assets/doctor_1.png',
-                matchTextDirection: true,
-              ),
+            child: Image.asset(
+              'assets/patient_1.png',
+              matchTextDirection: true,
             ),
           ),
           SafeArea(
@@ -81,13 +76,13 @@ class DoctorPage extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
-                    StreamBuilder<DoctorModel>(
-                        stream: DoctorsDB().getDoctor(id),
+                    StreamBuilder<Users>(
+                        stream: PatientsDB().getPatient(id),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Center(child: CircularProgressIndicator());
                           } else {
-                            DoctorModel doctor = snapshot.data;
+                            Users patient = snapshot.data;
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -139,12 +134,12 @@ class DoctorPage extends StatelessWidget {
                                       onPressed: () {
                                         var chatRoomId = ChatsDB()
                                             .getChatRoomIdByUsernames(
-                                                doctor.username,
-                                                patient.username);
+                                                patient.username,
+                                                doctor.username);
                                         Map<String, dynamic> chatRoomInfoMap = {
                                           "users": [
-                                            doctor.username,
-                                            patient.username
+                                            patient.username,
+                                            doctor.username
                                           ]
                                         };
                                         ChatsDB().createChatRoom(
@@ -153,8 +148,8 @@ class DoctorPage extends StatelessWidget {
                                             .push(MaterialPageRoute(
                                           builder: (context) => ChatPage(
                                             id: id,
-                                            myUserName: patient.username,
-                                            otherUserName: doctor.username,
+                                            myUserName: doctor.username,
+                                            otherUserName: patient.username,
                                             name: doctor.name,
                                           ),
                                         ));
@@ -175,25 +170,22 @@ class DoctorPage extends StatelessWidget {
                         }),
                     const SizedBox(height: 20),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '${rating.val}',
-                              style: TextStyle(
-                                color: Constants.darkColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Icon(Icons.star,
-                                color: Colors.amber[700], size: 28),
-                          ],
+                        Selector<RateProvider, double>(
+                          selector: (context, rate) => rate.val,
+                          builder: (context, value, child) => RatingBar(
+                            rating: value,
+                            icon: const Icon(Icons.star,
+                                size: 26, color: Colors.grey),
+                            starCount: 5,
+                            spacing: 4.0,
+                            size: 20,
+                            isIndicator: true,
+                            allowHalfRating: false,
+                            color: Colors.amber[600],
+                          ),
                         ),
-                        const SizedBox(width: 40),
                         const Text('( 2420  تقييم )'),
                       ],
                     ),

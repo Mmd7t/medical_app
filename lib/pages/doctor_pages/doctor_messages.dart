@@ -164,15 +164,6 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                 ],
               ),
               const Spacer(),
-              // CircleAvatar(
-              //   backgroundColor: Colors.red,
-              //   child: Text(
-              //     '1',
-              //     style: TextStyle(color: Colors.white),
-              //   ),
-              //   maxRadius: 13,
-              // ),
-              // const SizedBox(width: 12),
             ],
           ),
         ),

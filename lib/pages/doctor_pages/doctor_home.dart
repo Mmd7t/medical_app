@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
-import 'package:medical_app/db/db_chats.dart';
-import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:medical_app/pages/doctor_pages/patients_page.dart';
 import 'package:medical_app/widgets/main_template.dart';
-import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:provider/provider.dart';
+
+import '../search.dart';
 
 class DoctorHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var doctor = Provider.of<DoctorModel>(context);
     var listOfPatients = Provider.of<List<Users>>(context);
     return MainTemplate(
       isHome: true,
@@ -25,6 +24,13 @@ class DoctorHome extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 45).copyWith(top: 20),
               child: TextField(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  TextEditingController().clear();
+                  showSearch(
+                      context: context,
+                      delegate: SearchPage(Constants.patientsCollectionName));
+                },
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10),
                   hintText: 'بحث',
@@ -52,21 +58,9 @@ class DoctorHome extends StatelessWidget {
                         padding: const EdgeInsets.all(5.0),
                         child: InkWell(
                           onTap: () {
-                            var chatRoomId = ChatsDB().getChatRoomIdByUsernames(
-                                user.username, doctor.username);
-                            Map<String, dynamic> chatRoomInfoMap = {
-                              "users": [user.username, doctor.username]
-                            };
-                            ChatsDB()
-                                .createChatRoom(chatRoomId, chatRoomInfoMap);
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ChatPage(
-                                id: user.id,
-                                myUserName: doctor.username,
-                                otherUserName: user.username,
-                                name: user.name,
-                              ),
-                            ));
+                            Navigator.of(context).pushNamed(
+                                PatientProfilePage.routeName,
+                                arguments: user.id);
                           },
                           // Navigator.of(context).pushNamed(DoctorPage.routeName),
                           child: Card(

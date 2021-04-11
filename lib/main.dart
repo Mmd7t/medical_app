@@ -17,6 +17,7 @@ import 'package:medical_app/pages/foods_pages/protien_food.dart';
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/landing_page.dart';
 import 'package:medical_app/pages/registration/registration.dart';
+import 'package:medical_app/pages/search.dart';
 import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';

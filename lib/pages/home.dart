@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/pages/doctor_page.dart';
+import 'package:medical_app/pages/search.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,13 @@ class Home extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 45).copyWith(top: 20),
               child: TextField(
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                  TextEditingController().clear();
+                  showSearch(
+                      context: context,
+                      delegate: SearchPage(Constants.doctorsCollectionName));
+                },
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(10),
                   hintText: 'بحث',

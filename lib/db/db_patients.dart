@@ -24,13 +24,13 @@ class PatientsDB extends DB {
         .map((event) => Users.fromMap(event.data()));
   }
 
-  // Future<Users> getDataa() async {
-  //   return _db
-  //       .collection(Constants.patientsCollectionName)
-  //       .doc(getId())
-  //       .snapshots()
-  //       .map((event) => Users.fromMap(event.data()));
-  // }
+  Stream<Users> getPatient(id) {
+    return _db
+        .collection(Constants.patientsCollectionName)
+        .doc(id)
+        .snapshots()
+        .map((event) => Users.fromMap(event.data()));
+  }
 
   Stream<List<Users>> getAllPatients() {
     return _db.collection(Constants.patientsCollectionName).snapshots().map(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/models/chat_model.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
 
@@ -32,14 +33,11 @@ class _ChatMessagesState extends State<ChatMessages> {
   @override
   void initState() {
     onScreenLoaded();
-    print('userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr   ${widget.userName}');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // var size = MediaQuery.of(context).size;
-    // var userName = ModalRoute.of(context).settings.arguments;
     return MainTemplate(
       isHome: false,
       title: 'الرسائل',
@@ -61,8 +59,12 @@ class _ChatMessagesState extends State<ChatMessages> {
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {
                         DocumentSnapshot ds = snapshot.data.docs[index];
-                        return ChatRoomListTile(
-                            ds["lastMessage"], ds.id, widget.userName);
+                        if (ds["lastMessage"] != null) {
+                          return ChatRoomListTile(
+                              ds["lastMessage"], ds.id, widget.userName);
+                        } else {
+                          return SizedBox();
+                        }
                       },
                     );
                   }
@@ -108,13 +110,13 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         onTap: () {
           var chatRoomId =
               ChatsDB().getChatRoomIdByUsernames(username, widget.myUsername);
-          Map<String, dynamic> chatRoomInfoMap = {
-            "users": [username, widget.myUsername]
-          };
-          ChatsDB().createChatRoom(chatRoomId, chatRoomInfoMap);
+          // Map<String, dynamic> chatRoomInfoMap = {
+          //   "users": [username, widget.myUsername]
+          // };
+          ChatsDB().createChatRoom(chatRoomId,
+              ChatModel(users: [username, widget.myUsername]).toMap());
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatPage(
-              // id: id,
               myUserName: widget.myUsername,
               otherUserName: username,
               name: name,
@@ -166,15 +168,6 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                 ],
               ),
               const Spacer(),
-              // CircleAvatar(
-              //   backgroundColor: Colors.red,
-              //   child: Text(
-              //     '1',
-              //     style: TextStyle(color: Colors.white),
-              //   ),
-              //   maxRadius: 13,
-              // ),
-              // const SizedBox(width: 12),
             ],
           ),
         ),
