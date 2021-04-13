@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/models/chat_model.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
 
@@ -110,11 +109,13 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
         onTap: () {
           var chatRoomId =
               ChatsDB().getChatRoomIdByUsernames(username, widget.myUsername);
-          // Map<String, dynamic> chatRoomInfoMap = {
-          //   "users": [username, widget.myUsername]
-          // };
-          ChatsDB().createChatRoom(chatRoomId,
-              ChatModel(users: [username, widget.myUsername]).toMap());
+          Map<String, dynamic> chatRoomInfoMap = {
+            "users": [username, widget.myUsername],
+            'lastMessage': null,
+            'lastMessageSendBy': null,
+            'lastMessageSendTs': null
+          };
+          ChatsDB().createChatRoom(chatRoomId, chatRoomInfoMap);
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatPage(
               myUserName: widget.myUsername,

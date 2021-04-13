@@ -40,46 +40,49 @@ class DoctorProfile extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: const EdgeInsets.only(top: 10),
-              width: size.width,
-              height: size.height * 0.7,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Theme.of(context).accentColor,
-                  Constants.color2,
-                ], begin: Alignment.centerLeft, end: Alignment.centerRight),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(35),
-                ),
-              ),
-              child: Container(
-                width: size.width,
-                height: size.height * 0.7,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(35),
-                  ),
-                ),
-                child: ListView(
-                  children: [
-                    StreamBuilder<DoctorModel>(
-                        stream: DoctorsDB().getData(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return CircularProgressIndicator();
-                          } else {
-                            DoctorModel user = snapshot.data;
-                            return Column(
+          StreamBuilder<DoctorModel>(
+              stream: DoctorsDB().getData(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  DoctorModel doctor = snapshot.data;
+                  return Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 10),
+                      width: size.width,
+                      height: size.height * 0.7,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            colors: [
+                              Theme.of(context).accentColor,
+                              Constants.color2,
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(35),
+                        ),
+                      ),
+                      child: Container(
+                        width: size.width,
+                        height: size.height * 0.7,
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(35),
+                          ),
+                        ),
+                        child: ListView(
+                          children: [
+                            Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'د / ${user.name}',
+                                  'د / ${doctor.name}',
                                   style: GoogleFonts.elMessiri(
                                     fontSize: Theme.of(context)
                                         .textTheme
@@ -100,52 +103,64 @@ class DoctorProfile extends StatelessWidget {
                                   ),
                                 ),
                               ],
-                            );
-                          }
-                        }),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              color: (index == 4)
-                                  ? Constants.darkColor.withOpacity(0.4)
-                                  : Colors.amber[700],
                             ),
-                          ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      (doctor.rate == null)
+                                          ? '0.0'
+                                          : '${doctor.rate}',
+                                      style: TextStyle(
+                                        color: Constants.darkColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Icon(Icons.star,
+                                        color: Colors.amber[700], size: 28),
+                                  ],
+                                ),
+                                const Text('( 2420  تقييم )'),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              'نبذة عن الدكتور',
+                              style: GoogleFonts.elMessiri(
+                                fontSize: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .fontSize +
+                                    2,
+                                color: Constants.darkColor,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
+                              style: GoogleFonts.elMessiri(
+                                height: 2,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .fontSize,
+                                color: Constants.darkColor,
+                              ),
+                            ),
+                          ],
                         ),
-                        const Text('( 2420  تقييم )'),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'نبذة عن الدكتور',
-                      style: GoogleFonts.elMessiri(
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle1.fontSize + 2,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.w800,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
-                      style: GoogleFonts.elMessiri(
-                        height: 2,
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle1.fontSize,
-                        color: Constants.darkColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  );
+                }
+              }),
         ],
       ),
       // floatingActionButton: FloatingActionButton.extended(

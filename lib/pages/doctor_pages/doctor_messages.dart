@@ -107,7 +107,10 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
           var chatRoomId =
               ChatsDB().getChatRoomIdByUsernames(username, widget.myUsername);
           Map<String, dynamic> chatRoomInfoMap = {
-            "users": [username, widget.myUsername]
+            "users": [username, widget.myUsername],
+            'lastMessage': null,
+            'lastMessageSendBy': null,
+            'lastMessageSendTs': null
           };
           ChatsDB().createChatRoom(chatRoomId, chatRoomInfoMap);
           Navigator.of(context).push(MaterialPageRoute(

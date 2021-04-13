@@ -16,7 +16,7 @@ class ChatsDB {
   }
 
   updateLastMessageSend(String chatRoomId, Map lastMessageInfoMap) {
-    return FirebaseFirestore.instance
+    return _db
         .collection(Constants.chatsCollectionName)
         .doc(chatRoomId)
         .update(lastMessageInfoMap);
@@ -68,7 +68,6 @@ class ChatsDB {
   Future<Stream<QuerySnapshot>> getChatRooms(userName) async {
     return _db
         .collection(Constants.chatsCollectionName)
-        // .orderBy("lastMessageSendTs", descending: true)
         .where("users", arrayContains: userName)
         .snapshots();
   }
@@ -86,10 +85,4 @@ class ChatsDB {
         .where("username", isEqualTo: username)
         .get();
   }
-  // Future<QuerySnapshot> getUserInfo(String username) async {
-  //   return await _db
-  //       .collection("users")
-  //       .where("username", isEqualTo: username)
-  //       .get();
-  // }
 }

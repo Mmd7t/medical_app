@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/db/db_patients.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
 
 abstract class Auth {
@@ -31,8 +32,8 @@ class AuthProvider implements Auth {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: pass);
       if (authUserState == AuthUserState.doctor) {
-        await _doctorsDB.saveData(
-            Users(id: getUID(), name: name, email: email, username: username));
+        await _doctorsDB.saveData(DoctorModel(
+            id: getUID(), name: name, email: email, username: username));
       } else {
         await _patientsDB.saveData(
             Users(id: getUID(), name: name, email: email, username: username));

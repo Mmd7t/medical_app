@@ -4,6 +4,8 @@ class DoctorModel {
   String email;
   String username;
   double rate;
+  String phoneNumber;
+  String workSpace;
 
   DoctorModel({
     this.id,
@@ -11,6 +13,8 @@ class DoctorModel {
     this.email,
     this.username,
     this.rate,
+    this.phoneNumber,
+    this.workSpace,
   });
 
   factory DoctorModel.fromMap(Map<String, dynamic> data) {
@@ -20,6 +24,8 @@ class DoctorModel {
       email: data['email'],
       username: data['username'],
       rate: data['rate'],
+      phoneNumber: data['phoneNumber'],
+      workSpace: data['workSpace'],
     );
   }
 
@@ -30,6 +36,8 @@ class DoctorModel {
       'email': email,
       'username': username,
       'rate': rate,
+      'phoneNumber': phoneNumber,
+      'workSpace': workSpace,
     };
   }
 }

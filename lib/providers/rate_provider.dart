@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RateProvider extends ChangeNotifier {
-  double _val = 0;
+  double _rate = 0.0;
 
-  double get val => _val;
+  double get rate => _rate;
 
-  void setRateValue(value) {
-    _val = value;
-    notifyListeners();
+  setRate(value) {
+    _rate = value;
   }
 }

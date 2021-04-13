@@ -91,6 +91,7 @@ class _LoginFormState extends State<LoginForm> {
                     if (authUserState == AuthUserState.doctor) {
                       Provider.of<DoctorProvider>(context, listen: false)
                           .switchDoctor();
+                      showConfirmationDialog(context);
                     }
                     AuthProvider()
                         .signIn(email.trim(), password, context, authUserState);
@@ -173,6 +174,45 @@ class _LoginFormState extends State<LoginForm> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  showConfirmationDialog(context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('تأكيد الهوية'),
+        content: Form(
+          // key: _formKey,
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(10),
+              hintText: 'ادخل الكود',
+              filled: true,
+              fillColor: Constants.textFieldColor,
+              hintStyle: const TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'من فضلك ادخل الكود';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (newValue) {
+              setState(() {
+                // weight = newValue;
+              });
+            },
+          ),
         ),
       ),
     );

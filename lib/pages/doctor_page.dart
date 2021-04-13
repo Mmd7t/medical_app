@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
@@ -19,7 +18,6 @@ class DoctorPage extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     var id = ModalRoute.of(context).settings.arguments;
     var patient = Provider.of<Users>(context);
-    var rating = Provider.of<RateProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
@@ -50,45 +48,46 @@ class DoctorPage extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              padding: const EdgeInsets.only(top: 10),
-              width: size.width,
-              height: size.height * 0.7,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).accentColor,
-                    Constants.color2,
-                  ],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(35),
-                ),
-              ),
-              child: Container(
-                width: size.width,
-                height: size.height * 0.7,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(35),
-                  ),
-                ),
-                child: ListView(
-                  children: [
-                    StreamBuilder<DoctorModel>(
-                        stream: DoctorsDB().getDoctor(id),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          } else {
-                            DoctorModel doctor = snapshot.data;
-                            return Row(
+          StreamBuilder<DoctorModel>(
+              stream: DoctorsDB().getDoctor(id),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  DoctorModel doctor = snapshot.data;
+
+                  return Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 10),
+                      width: size.width,
+                      height: size.height * 0.7,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Theme.of(context).accentColor,
+                            Constants.color2,
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(35),
+                        ),
+                      ),
+                      child: Container(
+                        width: size.width,
+                        height: size.height * 0.7,
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(35),
+                          ),
+                        ),
+                        child: ListView(
+                          children: [
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
@@ -145,7 +144,10 @@ class DoctorPage extends StatelessWidget {
                                           "users": [
                                             doctor.username,
                                             patient.username
-                                          ]
+                                          ],
+                                          'lastMessage': null,
+                                          'lastMessageSendBy': null,
+                                          'lastMessageSendTs': null
                                         };
                                         ChatsDB().createChatRoom(
                                             chatRoomId, chatRoomInfoMap);
@@ -170,58 +172,65 @@ class DoctorPage extends StatelessWidget {
                                   ],
                                 ),
                               ],
-                            );
-                          }
-                        }),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      (doctor.rate == null)
+                                          ? '0.0'
+                                          : '${doctor.rate}',
+                                      style: TextStyle(
+                                        color: Constants.darkColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Icon(Icons.star,
+                                        color: Colors.amber[700], size: 28),
+                                  ],
+                                ),
+                                const SizedBox(width: 40),
+                                const Text('( 2420  تقييم )'),
+                              ],
+                            ),
+                            const SizedBox(height: 30),
                             Text(
-                              '${rating.val}',
-                              style: TextStyle(
+                              'نبذة عن الدكتور',
+                              style: GoogleFonts.elMessiri(
+                                fontSize: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1
+                                        .fontSize +
+                                    2,
                                 color: Constants.darkColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
                               ),
                             ),
-                            const SizedBox(width: 5),
-                            Icon(Icons.star,
-                                color: Colors.amber[700], size: 28),
+                            const SizedBox(height: 10),
+                            Text(
+                              'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
+                              style: GoogleFonts.elMessiri(
+                                height: 2,
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .fontSize,
+                                color: Constants.darkColor,
+                              ),
+                            ),
                           ],
                         ),
-                        const SizedBox(width: 40),
-                        const Text('( 2420  تقييم )'),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      'نبذة عن الدكتور',
-                      style: GoogleFonts.elMessiri(
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle1.fontSize + 2,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.w800,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
-                      style: GoogleFonts.elMessiri(
-                        height: 2,
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle1.fontSize,
-                        color: Constants.darkColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  );
+                }
+              }),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -242,6 +251,9 @@ class DoctorPage extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () {
+                    var rate =
+                        Provider.of<RateProvider>(context, listen: false).rate;
+                    DoctorsDB().saveData(DoctorModel(rate: rate).toMap());
                     Navigator.of(context).pop();
                   },
                   child: const Text('قيم'),

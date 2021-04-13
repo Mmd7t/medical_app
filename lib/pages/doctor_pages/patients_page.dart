@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
@@ -7,8 +6,6 @@ import 'package:medical_app/db/db_patients.dart';
 import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
 import 'package:medical_app/pages/messages/chat_page.dart';
-import 'package:medical_app/providers/rate_provider.dart';
-import 'package:medical_app/widgets/doctor_rate.dart';
 import 'package:provider/provider.dart';
 
 class PatientProfilePage extends StatelessWidget {
@@ -26,10 +23,12 @@ class PatientProfilePage extends StatelessWidget {
             width: size.width,
             height: size.height / 2,
             color: Constants.textFieldColor,
-            alignment: Alignment.topRight,
+            alignment: Alignment.topCenter,
+            margin: const EdgeInsets.only(top: 15),
             child: Image.asset(
               'assets/patient_1.png',
               matchTextDirection: true,
+              width: size.width * 0.7,
             ),
           ),
           SafeArea(
@@ -94,7 +93,7 @@ class PatientProfilePage extends StatelessWidget {
                                     Hero(
                                       tag: 'doctor name',
                                       child: Text(
-                                        'د / ${doctor.name}',
+                                        '${patient.name}',
                                         style: GoogleFonts.elMessiri(
                                           fontSize: Theme.of(context)
                                               .textTheme
@@ -106,7 +105,7 @@ class PatientProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      'اخصائى جراحة',
+                                      'فشل كلوى',
                                       style: GoogleFonts.elMessiri(
                                         fontSize: Theme.of(context)
                                             .textTheme
@@ -140,7 +139,10 @@ class PatientProfilePage extends StatelessWidget {
                                           "users": [
                                             patient.username,
                                             doctor.username
-                                          ]
+                                          ],
+                                          'lastMessage': null,
+                                          'lastMessageSendBy': null,
+                                          'lastMessageSendTs': null
                                         };
                                         ChatsDB().createChatRoom(
                                             chatRoomId, chatRoomInfoMap);
@@ -150,7 +152,7 @@ class PatientProfilePage extends StatelessWidget {
                                             id: id,
                                             myUserName: doctor.username,
                                             otherUserName: patient.username,
-                                            name: doctor.name,
+                                            name: patient.name,
                                           ),
                                         ));
                                       },
@@ -168,30 +170,9 @@ class PatientProfilePage extends StatelessWidget {
                             );
                           }
                         }),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Selector<RateProvider, double>(
-                          selector: (context, rate) => rate.val,
-                          builder: (context, value, child) => RatingBar(
-                            rating: value,
-                            icon: const Icon(Icons.star,
-                                size: 26, color: Colors.grey),
-                            starCount: 5,
-                            spacing: 4.0,
-                            size: 20,
-                            isIndicator: true,
-                            allowHalfRating: false,
-                            color: Colors.amber[600],
-                          ),
-                        ),
-                        const Text('( 2420  تقييم )'),
-                      ],
-                    ),
                     const SizedBox(height: 30),
                     Text(
-                      'نبذة عن الدكتور',
+                      'نبذة عن الحالة',
                       style: GoogleFonts.elMessiri(
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize + 2,
@@ -201,7 +182,7 @@ class PatientProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
+                      'المريض يعانى من الم فى المعدة و احيانا يشغر بالغثيان و القيئ',
                       style: GoogleFonts.elMessiri(
                         height: 2,
                         fontSize:
@@ -215,35 +196,6 @@ class PatientProfilePage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              titleTextStyle: GoogleFonts.elMessiri(
-                color: Constants.darkColor,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-              title: const Text('تقييم الدكتور'),
-              content: DoctorRate(),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('قيم'),
-                ),
-              ],
-            ),
-          );
-        },
-        label: const Text('تقييم'),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }

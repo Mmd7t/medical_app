@@ -45,8 +45,8 @@ class _DoctorRateState extends State<DoctorRate> {
                   ),
                 ),
                 onPressed: () {
-                  if (rate.val < 5) {
-                    rate.setRateValue(rate.val + 1);
+                  if (rate.rate < 5) {
+                    rate.setRate(rate.rate + 1);
                   }
                 },
               ),
@@ -73,7 +73,7 @@ class _DoctorRateState extends State<DoctorRate> {
                 color: Colors.white,
                 alignment: Alignment.center,
                 child: Text(
-                  rate.val.toStringAsFixed(0),
+                  rate.rate.toStringAsFixed(0),
                   style: GoogleFonts.elMessiri(
                     fontWeight: FontWeight.w900,
                     color: Constants.darkColor,
@@ -110,8 +110,8 @@ class _DoctorRateState extends State<DoctorRate> {
                   ),
                 ),
                 onPressed: () {
-                  if (rate.val > 0) {
-                    rate.setRateValue(rate.val - 1);
+                  if (rate.rate > 0) {
+                    rate.setRate(rate.rate - 1);
                   }
                 },
               ),

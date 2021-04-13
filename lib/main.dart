@@ -17,16 +17,16 @@ import 'package:medical_app/pages/foods_pages/protien_food.dart';
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/landing_page.dart';
 import 'package:medical_app/pages/registration/registration.dart';
-import 'package:medical_app/pages/search.dart';
 import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';
 import 'package:medical_app/providers/obscure_provider.dart';
 import 'package:medical_app/providers/rate_provider.dart';
 import 'package:provider/provider.dart';
-
 import 'pages/doctor_page.dart';
+import 'pages/doctor_pages/patients_page.dart';
 import 'pages/global_advices_page.dart';
+import 'pages/registration/doctor_confirmation.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/auth_provider.dart';
 
@@ -103,9 +103,9 @@ class MyApp extends StatelessWidget {
         ],
         debugShowCheckedModeBanner: false,
         supportedLocales: [Locale("ar", "EG")],
-        locale: Locale("ar", "EG"),
+        locale: const Locale("ar", "EG"),
         theme: ThemeData(
-          accentColor: Color(0xFF045de9),
+          accentColor: const Color(0xFF045de9),
           primaryColor: const Color(0xFF95A3F5),
         ),
         initialRoute: SplashScreen.routeName,
@@ -127,6 +127,9 @@ class MyApp extends StatelessWidget {
           TreatmentDetailsPage.routeName: (context) => TreatmentDetailsPage(),
           DoctorProfile.routeName: (context) => DoctorProfile(),
           GlobalAdvicesPage.routeName: (context) => GlobalAdvicesPage(),
+          PatientProfilePage.routeName: (context) => PatientProfilePage(),
+          DoctorConfirmationPage.routeName: (context) =>
+              DoctorConfirmationPage(),
         },
       ),
     );

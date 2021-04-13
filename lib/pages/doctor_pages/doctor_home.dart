@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/models/user.dart';
 import 'package:medical_app/pages/doctor_pages/patients_page.dart';
+import 'package:medical_app/widgets/custom_card.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +11,6 @@ import '../search.dart';
 class DoctorHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     var listOfPatients = Provider.of<List<Users>>(context);
     return MainTemplate(
       isHome: true,
@@ -54,61 +53,13 @@ class DoctorHome extends StatelessWidget {
                     itemCount: listOfPatients.length,
                     itemBuilder: (context, index) {
                       Users user = listOfPatients[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                PatientProfilePage.routeName,
-                                arguments: user.id);
-                          },
-                          // Navigator.of(context).pushNamed(DoctorPage.routeName),
-                          child: Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  width: size.width * 0.3,
-                                  height: size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(13),
-                                  ),
-                                  child: Image.asset(
-                                    'assets/patient_1.png',
-                                    matchTextDirection: true,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      '${user.name}',
-                                      style: GoogleFonts.elMessiri(
-                                          fontSize: Theme.of(context)
-                                              .textTheme
-                                              .headline6
-                                              .fontSize,
-                                          color: Constants.darkColor,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 6),
-                                    Text(
-                                      'فشل كلوى',
-                                      style: GoogleFonts.elMessiri(
-                                          color: Colors.grey.shade700),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      return CustomCard.patient(
+                        name: user.name,
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              PatientProfilePage.routeName,
+                              arguments: user.id);
+                        },
                       );
                     },
                   ),

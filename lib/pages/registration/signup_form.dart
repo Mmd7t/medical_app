@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/db/db_doctors.dart';
+import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/pages/registration/sign_btn.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:medical_app/providers/auth_provider.dart';
@@ -140,9 +142,11 @@ class _SignupFormState extends State<SignupForm> {
                     if (authUserState == AuthUserState.doctor) {
                       Provider.of<DoctorProvider>(context, listen: false)
                           .switchDoctor();
+                      showDoctorDialog(context);
+                    } else {
+                      context.read<AuthProvider>().signUp(name, username,
+                          email.trim(), password, context, authUserState);
                     }
-                    context.read<AuthProvider>().signUp(name, username,
-                        email.trim(), password, context, authUserState);
                   }
                 },
               ),
@@ -223,6 +227,69 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  showDoctorDialog(context) {
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController workController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('استكمال البيانات'),
+        content: Column(
+          children: [
+            TextField(
+              controller: phoneController,
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(10),
+                hintText: 'ادخل رقم الهاتف',
+                filled: true,
+                fillColor: Constants.textFieldColor,
+                hintStyle: const TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            TextField(
+              controller: workController,
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(10),
+                hintText: 'ادخل عنوان مقر العمل',
+                filled: true,
+                fillColor: Constants.textFieldColor,
+                hintStyle: const TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              await DoctorsDB().saveData(DoctorModel(
+                  id: AuthProvider().getUID(),
+                  phoneNumber: phoneController.text,
+                  workSpace: workController.text));
+
+              Navigator.of(context).pop();
+
+              context.read<AuthProvider>().signUp(name, username, email.trim(),
+                  password, context, authUserState);
+            },
+            child: const Text('ادخال'),
+          ),
+        ],
       ),
     );
   }
