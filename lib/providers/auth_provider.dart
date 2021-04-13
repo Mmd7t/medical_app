@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_doctors.dart';
@@ -7,7 +8,8 @@ import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
 
 abstract class Auth {
-  signUp(name, phoneNum, email, pass, context, AuthUserState authUserState);
+  signUp(name, phoneNum, email, pass, context, AuthUserState authUserState,
+      {phoneNumer, workSpace});
   signIn(email, pass, context, AuthUserState authUserState);
   signOut();
 }
@@ -16,6 +18,8 @@ class AuthProvider implements Auth {
   FirebaseAuth _auth = FirebaseAuth.instance;
   PatientsDB _patientsDB = PatientsDB();
   DoctorsDB _doctorsDB = DoctorsDB();
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  String token;
 
 /*----------------------------------------------------------------------------------------*/
 /*------------------------------------  Get User ID  -------------------------------------*/
@@ -26,14 +30,25 @@ class AuthProvider implements Auth {
 /*--------------------------------------  Sign Up  ---------------------------------------*/
 /*----------------------------------------------------------------------------------------*/
 
+  getToken() async {
+    return await _messaging.getToken();
+  }
+
   @override
-  signUp(
-      name, username, email, pass, context, AuthUserState authUserState) async {
+  signUp(name, username, email, pass, context, AuthUserState authUserState,
+      {phoneNumer, workSpace}) async {
     try {
       await _auth.createUserWithEmailAndPassword(email: email, password: pass);
+      token = await _messaging.getToken();
       if (authUserState == AuthUserState.doctor) {
         await _doctorsDB.saveData(DoctorModel(
-            id: getUID(), name: name, email: email, username: username));
+            id: getUID(),
+            name: name,
+            email: email,
+            username: username,
+            phoneNumber: phoneNumer,
+            workSpace: workSpace,
+            token: token));
       } else {
         await _patientsDB.saveData(
             Users(id: getUID(), name: name, email: email, username: username));

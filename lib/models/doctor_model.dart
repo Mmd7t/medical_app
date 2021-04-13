@@ -6,16 +6,17 @@ class DoctorModel {
   double rate;
   String phoneNumber;
   String workSpace;
+  String token;
 
-  DoctorModel({
-    this.id,
-    this.name,
-    this.email,
-    this.username,
-    this.rate,
-    this.phoneNumber,
-    this.workSpace,
-  });
+  DoctorModel(
+      {this.id,
+      this.name,
+      this.email,
+      this.username,
+      this.rate,
+      this.phoneNumber,
+      this.workSpace,
+      this.token});
 
   factory DoctorModel.fromMap(Map<String, dynamic> data) {
     return DoctorModel(
@@ -26,6 +27,7 @@ class DoctorModel {
       rate: data['rate'],
       phoneNumber: data['phoneNumber'],
       workSpace: data['workSpace'],
+      token: data['token'],
     );
   }
 
@@ -38,6 +40,7 @@ class DoctorModel {
       'rate': rate,
       'phoneNumber': phoneNumber,
       'workSpace': workSpace,
+      'token': token,
     };
   }
 }

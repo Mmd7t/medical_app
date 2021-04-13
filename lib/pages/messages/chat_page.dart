@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
@@ -12,13 +15,13 @@ import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
   static const String routeName = 'chatPage';
-  final String id;
   final String myUserName;
   final String otherUserName;
   final String name;
+  final String token;
 
   const ChatPage(
-      {Key key, this.id, this.myUserName, this.otherUserName, this.name})
+      {Key key, this.myUserName, this.otherUserName, this.name, this.token})
       : super(key: key);
 
   @override
@@ -28,12 +31,48 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   String chatRoomId, messageId = "";
   Stream messageStream;
+  TextEditingController messageTextEdittingController = TextEditingController();
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   getInfo() {
     chatRoomId = ChatsDB()
         .getChatRoomIdByUsernames(widget.myUserName, widget.otherUserName);
   }
 
-  TextEditingController messageTextEdittingController = TextEditingController();
+  static Future<bool> sendFcmMessage(String title, String message) async {
+    try {
+      var url = 'https://fcm.googleapis.com/fcm/send';
+      var header = {
+        "Content-Type": "application/json",
+        "Authorization":
+            "key=AAAAxa8VtvE:APA91bElT3tK1bzmsFONNOOIRpGcPE5HHpM4kQnQPaHf0z9IaTdA2EPSMDvZ8Tsfw_53Ls91NSn75RnL2MMbT8OQ9I8su9cTqupfzJ2EOIJAfl06VxiV7I0m4x9NtUmlTiYKxDkcYWZM",
+      };
+      var request = {
+        "notification": {
+          "title": title,
+          "text": message,
+          "sound": "default",
+          "color": "#990000",
+        },
+        "priority": "high",
+        "to": "/patients/all",
+      };
+
+      var client = Client();
+
+      await client.post(Uri.parse(url),
+          headers: header, body: json.encode(request));
+      print('donnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnne');
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+/*-------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Add Message Func.  -----------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------*/
+
   addMessage(bool sendClicked) {
     if (messageTextEdittingController.text != "") {
       String message = messageTextEdittingController.text;
@@ -66,9 +105,14 @@ class _ChatPageState extends State<ChatPage> {
           // make message id blank to get regenerated on next message send
           messageId = "";
         }
+        sendFcmMessage('hi', 'My name is you');
       });
     }
   }
+
+/*-------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Chat Message Tile  -----------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------*/
 
   Widget chatMessageTile(String message, bool sendByMe) {
     return Row(
@@ -99,6 +143,10 @@ class _ChatPageState extends State<ChatPage> {
       ],
     );
   }
+
+/*-------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Chat Messages List  ----------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------*/
 
   chatsMessagess() {
     return Expanded(
@@ -164,6 +212,10 @@ class _ChatPageState extends State<ChatPage> {
     doThisOnLaunch();
     super.initState();
   }
+
+/*-------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------  Chat Decoration Page  ---------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------*/
 
   @override
   Widget build(BuildContext context) {

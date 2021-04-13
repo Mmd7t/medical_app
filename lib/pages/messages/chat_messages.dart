@@ -84,13 +84,14 @@ class ChatRoomListTile extends StatefulWidget {
 }
 
 class _ChatRoomListTileState extends State<ChatRoomListTile> {
-  String name = "", username = "";
+  String name = "", username = "", token = '';
 
   getThisUserInfo() async {
     username =
         widget.chatRoomId.replaceAll(widget.myUsername, "").replaceAll("_", "");
     QuerySnapshot querySnapshot = await ChatsDB().getDoctorInfo(username);
     name = "${querySnapshot.docs[0]["name"]}";
+    token = "${querySnapshot.docs[0]["token"]}";
     setState(() {});
   }
 
@@ -121,6 +122,7 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
               myUserName: widget.myUsername,
               otherUserName: username,
               name: name,
+              token: token,
             ),
           ));
         },

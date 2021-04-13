@@ -58,7 +58,7 @@ class Home extends StatelessWidget {
                           Navigator.of(context).pushNamed(DoctorPage.routeName,
                               arguments: doctor.id);
                         },
-                        rate: '${doctor.rate}',
+                        rate: (doctor.rate == null) ? '0' : '${doctor.rate}',
                       );
                     },
                   ),

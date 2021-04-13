@@ -16,9 +16,8 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
   String email, password;
-
   AuthUserState authUserState = AuthUserState.patient;
-
+  String code = 'amal1234';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,9 +91,10 @@ class _LoginFormState extends State<LoginForm> {
                       Provider.of<DoctorProvider>(context, listen: false)
                           .switchDoctor();
                       showConfirmationDialog(context);
+                    } else {
+                      AuthProvider().signIn(
+                          email.trim(), password, context, authUserState);
                     }
-                    AuthProvider()
-                        .signIn(email.trim(), password, context, authUserState);
                   }
                 },
               ),
@@ -180,15 +180,17 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   showConfirmationDialog(context) {
+    final form = GlobalKey<FormState>();
+    String val;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         title: const Text('تأكيد الهوية'),
         content: Form(
-          // key: _formKey,
+          key: form,
           child: TextFormField(
             textAlign: TextAlign.center,
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(10),
               hintText: 'ادخل الكود',
@@ -209,11 +211,33 @@ class _LoginFormState extends State<LoginForm> {
             },
             onSaved: (newValue) {
               setState(() {
-                // weight = newValue;
+                val = newValue;
               });
             },
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              if (form.currentState.validate()) {
+                form.currentState.save();
+                if (code == val) {
+                  Navigator.of(context).pop();
+                  AuthProvider()
+                      .signIn(email.trim(), password, context, authUserState);
+                } else {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('الكود غير صحيح'),
+                    ),
+                  );
+                }
+              }
+            },
+            child: const Text('ادخال'),
+          ),
+        ],
       ),
     );
   }

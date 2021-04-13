@@ -3,12 +3,14 @@ class Users {
   String name;
   String email;
   String username;
+  String token;
 
   Users({
     this.id,
     this.name,
     this.email,
     this.username,
+    this.token,
   });
 
   factory Users.fromMap(Map<String, dynamic> data) {
@@ -17,6 +19,7 @@ class Users {
       name: data['name'],
       email: data['email'],
       username: data['username'],
+      token: data['token'],
     );
   }
 
@@ -26,6 +29,7 @@ class Users {
       'name': name,
       'email': email,
       'username': username,
+      'token': token,
     };
   }
 }

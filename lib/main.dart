@@ -21,12 +21,10 @@ import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';
 import 'package:medical_app/providers/obscure_provider.dart';
-import 'package:medical_app/providers/rate_provider.dart';
 import 'package:provider/provider.dart';
 import 'pages/doctor_page.dart';
 import 'pages/doctor_pages/patients_page.dart';
 import 'pages/global_advices_page.dart';
-import 'pages/registration/doctor_confirmation.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/auth_provider.dart';
 
@@ -88,10 +86,6 @@ class MyApp extends StatelessWidget {
           create: (context) => DoctorsDB().getData(),
           initialData: null,
         ),
-/*----------------------------------------------------------------------------------------------*/
-/*-----------------------------------  Doctor Rate Provider  -----------------------------------*/
-/*----------------------------------------------------------------------------------------------*/
-        ChangeNotifierProvider(create: (context) => RateProvider()),
       ],
       builder: (context, child) => child,
       child: MaterialApp(
@@ -102,7 +96,7 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
         ],
         debugShowCheckedModeBanner: false,
-        supportedLocales: [Locale("ar", "EG")],
+        supportedLocales: const [Locale("ar", "EG")],
         locale: const Locale("ar", "EG"),
         theme: ThemeData(
           accentColor: const Color(0xFF045de9),
@@ -128,8 +122,6 @@ class MyApp extends StatelessWidget {
           DoctorProfile.routeName: (context) => DoctorProfile(),
           GlobalAdvicesPage.routeName: (context) => GlobalAdvicesPage(),
           PatientProfilePage.routeName: (context) => PatientProfilePage(),
-          DoctorConfirmationPage.routeName: (context) =>
-              DoctorConfirmationPage(),
         },
       ),
     );

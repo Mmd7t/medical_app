@@ -19,13 +19,15 @@ class TreatmentCenter extends StatelessWidget {
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 10,
+              itemCount: Constants.treatmentCenters.length,
               itemBuilder: (context, index) {
+                var val = Constants.treatmentCenters[index];
                 return Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: InkWell(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed(TreatmentDetailsPage.routeName),
+                    onTap: () => Navigator.of(context).pushNamed(
+                        TreatmentDetailsPage.routeName,
+                        arguments: index),
                     child: Card(
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -46,44 +48,23 @@ class TreatmentCenter extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'مركز الحياه',
+                          Expanded(
+                            child: Container(
+                              child: Text(
+                                val['name'],
+                                softWrap: true,
+                                maxLines: 2,
                                 style: GoogleFonts.elMessiri(
                                     fontSize: Theme.of(context)
                                         .textTheme
-                                        .headline6
+                                        .subtitle1
                                         .fontSize,
                                     color: Constants.darkColor,
                                     fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(height: 6),
-                              Text(
-                                'مركز لعلاج الفشل الكلوى',
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.elMessiri(
-                                    color: Colors.grey.shade700),
-                              ),
-                              Text(
-                                '12 ص : 4 م',
-                                style: GoogleFonts.elMessiri(
-                                    color: Colors.grey.shade700),
-                              ),
-                            ],
+                            ),
                           ),
-                          Spacer(),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star, color: Colors.amber[700]),
-                              const SizedBox(width: 3),
-                              const Text('4.6'),
-                            ],
-                          ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 20),
                         ],
                       ),
                     ),

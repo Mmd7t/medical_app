@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:medical_app/db/db_doctors.dart';
-import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/pages/registration/sign_btn.dart';
 import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:medical_app/providers/auth_provider.dart';
@@ -235,10 +233,18 @@ class _SignupFormState extends State<SignupForm> {
     TextEditingController phoneController = TextEditingController();
     TextEditingController workController = TextEditingController();
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('استكمال البيانات'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: Text(
+          'استكمال البيانات',
+          style: GoogleFonts.elMessiri(
+            color: Constants.darkColor,
+          ),
+        ),
         content: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: phoneController,
@@ -256,10 +262,10 @@ class _SignupFormState extends State<SignupForm> {
                 ),
               ),
             ),
+            const SizedBox(height: 8),
             TextField(
               controller: workController,
               textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(10),
                 hintText: 'ادخل عنوان مقر العمل',
@@ -276,16 +282,13 @@ class _SignupFormState extends State<SignupForm> {
         ),
         actions: [
           TextButton(
-            onPressed: () async {
-              await DoctorsDB().saveData(DoctorModel(
-                  id: AuthProvider().getUID(),
-                  phoneNumber: phoneController.text,
-                  workSpace: workController.text));
-
+            onPressed: () {
               Navigator.of(context).pop();
 
               context.read<AuthProvider>().signUp(name, username, email.trim(),
-                  password, context, authUserState);
+                  password, context, authUserState,
+                  phoneNumer: phoneController.text,
+                  workSpace: workController.text);
             },
             child: const Text('ادخال'),
           ),

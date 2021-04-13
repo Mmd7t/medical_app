@@ -8,6 +8,8 @@ class TreatmentDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var index = ModalRoute.of(context).settings.arguments;
+    var treatment = Constants.treatmentCenters[index];
     return Scaffold(
       body: Stack(
         children: [
@@ -18,6 +20,19 @@ class TreatmentDetailsPage extends StatelessWidget {
             color: Constants.textFieldColor,
             alignment: Alignment.topRight,
             child: Image.asset('assets/treatment.png'),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios_rounded),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
@@ -50,71 +65,49 @@ class TreatmentDetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Hero(
-                              tag: 'doctor name',
-                              child: Text(
-                                'مركز الحياه',
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                treatment['name'],
                                 style: GoogleFonts.elMessiri(
                                   fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headline5
-                                      .fontSize,
+                                          .textTheme
+                                          .headline6
+                                          .fontSize -
+                                      3,
                                   color: Constants.darkColor,
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
-                            ),
-                            Text(
-                              'مركز لعلاج الفشل الكلوى',
-                              style: GoogleFonts.elMessiri(
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    .fontSize,
-                                color: Colors.grey.shade700,
+                              Text(
+                                treatment['hospital'],
+                                style: GoogleFonts.elMessiri(
+                                  fontSize: Theme.of(context)
+                                      .textTheme
+                                      .subtitle1
+                                      .fontSize,
+                                  color: Colors.grey.shade700,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Row(
-                          children: [
-                            FloatingActionButton(
-                              heroTag: 'call',
-                              onPressed: () {},
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15)),
-                              backgroundColor: Colors.green,
-                              child: const Icon(Icons.call_outlined),
-                            ),
-                          ],
+                        FloatingActionButton(
+                          heroTag: 'call',
+                          onPressed: () {},
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)),
+                          backgroundColor: Colors.green,
+                          child: const Icon(Icons.call_outlined),
                         ),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              color: (index == 4)
-                                  ? Constants.darkColor.withOpacity(0.4)
-                                  : Colors.amber[700],
-                            ),
-                          ),
-                        ),
-                        const Text('( 2420  تقييم )'),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
                     Text(
-                      'نبذة عن المركز',
+                      'ساعات العمل : ${treatment['workTime']}',
                       style: GoogleFonts.elMessiri(
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize + 2,
@@ -124,12 +117,12 @@ class TreatmentDetailsPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'الطبيب كما يُعرف بالاسم الأقل شيوعاً الآسي هو من درس علم الطب ومارسها. وهو يعاين المرضى ويشخص لهم المرض ويصرف لهم وصفة يكتب فيها الدواء. والطبيب بعد تخرجه يمارس الطب العام',
+                      'رقم الهاتف : ${treatment['phoneNum']}',
                       style: GoogleFonts.elMessiri(
                         height: 2,
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize,
-                        color: Constants.darkColor,
+                        color: Theme.of(context).accentColor,
                       ),
                     ),
                   ],
