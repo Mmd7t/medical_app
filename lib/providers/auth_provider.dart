@@ -6,6 +6,9 @@ import 'package:medical_app/db/db_doctors.dart';
 import 'package:medical_app/db/db_patients.dart';
 import 'package:medical_app/models/doctor_model.dart';
 import 'package:medical_app/models/user.dart';
+import 'package:provider/provider.dart';
+
+import 'doctor_provider.dart';
 
 abstract class Auth {
   signUp(name, phoneNum, email, pass, context, AuthUserState authUserState,
@@ -89,6 +92,7 @@ class AuthProvider implements Auth {
       if (authUserState == AuthUserState.doctor) {
         await DoctorsDB().getDoctorEmail(email).then((value) {
           if (value) {
+            Provider.of<DoctorProvider>(context, listen: false).switchDoctor();
             _auth.signInWithEmailAndPassword(email: email, password: pass);
           } else {
             showDialoge(

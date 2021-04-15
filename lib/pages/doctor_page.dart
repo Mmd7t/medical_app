@@ -44,6 +44,7 @@ class DoctorPage extends StatelessWidget {
                   otherUserName: doctor.username,
                   name: doctor.name,
                   token: doctor.token,
+                  myname: patient.name,
                 ),
               ));
             },

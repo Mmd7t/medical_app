@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Constants {
   static const textFieldColor = Color(0xFFF1F6FF);
@@ -235,6 +238,39 @@ class Constants {
       'phoneNum': '',
     },
   ];
+
+  Future<bool> sendFcmMessage(
+      String title, String message, String token) async {
+    try {
+      var url = 'https://fcm.googleapis.com/fcm/send';
+      var header = {
+        "Content-Type": "application/json",
+        "Authorization":
+            "key=AAAAxa8VtvE:APA91bElT3tK1bzmsFONNOOIRpGcPE5HHpM4kQnQPaHf0z9IaTdA2EPSMDvZ8Tsfw_53Ls91NSn75RnL2MMbT8OQ9I8su9cTqupfzJ2EOIJAfl06VxiV7I0m4x9NtUmlTiYKxDkcYWZM",
+      };
+      var request = {
+        'notification': <String, dynamic>{
+          'body': '$message',
+          'title': '$title'
+        },
+        'priority': 'high',
+        'data': <String, dynamic>{
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+          'id': '1',
+          'status': 'done'
+        },
+        'to': '$token',
+      };
+
+      await http.post(Uri.parse(url),
+          headers: header, body: json.encode(request));
+      print('donnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnne');
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 }
 
 enum UserType { patient, doctor }

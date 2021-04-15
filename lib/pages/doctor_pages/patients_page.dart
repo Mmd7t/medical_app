@@ -39,6 +39,7 @@ class PatientProfilePage extends StatelessWidget {
                   otherUserName: patient.username,
                   name: patient.name,
                   token: patient.token,
+                  myname: 'د / ${doctor.name}',
                 ),
               ));
             },

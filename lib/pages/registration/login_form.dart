@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/constants.dart';
-import 'package:medical_app/providers/doctor_provider.dart';
 import 'package:medical_app/providers/auth_provider.dart';
 import 'package:medical_app/providers/obscure_provider.dart';
 import 'package:medical_app/providers/user_login_type_provider.dart';
@@ -88,10 +87,6 @@ class _LoginFormState extends State<LoginForm> {
                 onClicked: () {
                   if (formKey.currentState.validate()) {
                     formKey.currentState.save();
-                    if (authState.authUserState == AuthUserState.doctor) {
-                      Provider.of<DoctorProvider>(context, listen: false)
-                          .switchDoctor();
-                    }
                     AuthProvider().signIn(email.trim(), password, context,
                         authState.authUserState);
                   }

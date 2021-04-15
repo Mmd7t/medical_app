@@ -136,7 +136,7 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                       setState(() {
                         result = (30 * double.parse(weight)) / 250;
                         water =
-                            'عدد اكواب الماء التى يحتاجها جسمك ${result.toStringAsFixed(0)}';
+                            'عدد اكواب الماء التى يحتاجها جسمك ${result.toStringAsFixed(0)} باليوم';
                         crossFadeState = CrossFadeState.showSecond;
                       });
 

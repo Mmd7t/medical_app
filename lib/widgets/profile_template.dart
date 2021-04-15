@@ -135,7 +135,7 @@ class ProfileTemplate extends StatelessWidget {
                             ),
                             Text(
                               (userType == UserType.doctor)
-                                  ? 'اخصائى جراحة'
+                                  ? 'اخصائى باطنى'
                                   : 'فشل كلوى',
                               style: Theme.of(context)
                                   .textTheme

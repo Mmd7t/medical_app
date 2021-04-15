@@ -75,9 +75,9 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                         textAlign: TextAlign.center,
                       ),
                       secondChild: Text(
-                        'انت فى $level و نسبة البروتين التى يحتاجها جسمك $protien',
+                        'انت فى $level نسبة البروتين التى يحتاجها جسمك $protien باليوم',
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 13.5,
                           color: Constants.darkColor,
                           fontWeight: FontWeight.bold,
                           fontFamily: Constants.fontName,

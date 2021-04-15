@@ -19,6 +19,7 @@ class DoctorProfile extends StatelessWidget {
             name: doctor.name,
             phoneNum: doctor.phoneNumber,
             workSpace: doctor.workSpace,
+            numOfRates: doctor.numOfRates.toString(),
           );
         }
       },
