@@ -51,12 +51,13 @@ class SearchPage extends SearchDelegate {
               .map<Widget>(
                 (a) => (collectionName == Constants.doctorsCollectionName)
                     ? CustomCard.doctor(
+                        workspace: a['workSpace'],
                         name: a['name'],
                         onTap: () {
                           Navigator.of(context).pushNamed(DoctorPage.routeName,
                               arguments: a['id']);
                         },
-                        rate: a['rate'],
+                        rate: '${a['rate']}',
                       )
                     : CustomCard.patient(
                         name: a['name'],

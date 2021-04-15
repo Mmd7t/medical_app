@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
 
 class TreatmentDetailsPage extends StatelessWidget {
@@ -72,7 +71,7 @@ class TreatmentDetailsPage extends StatelessWidget {
                             children: [
                               Text(
                                 treatment['name'],
-                                style: GoogleFonts.elMessiri(
+                                style: TextStyle(
                                   fontSize: Theme.of(context)
                                           .textTheme
                                           .headline6
@@ -80,16 +79,18 @@ class TreatmentDetailsPage extends StatelessWidget {
                                       3,
                                   color: Constants.darkColor,
                                   fontWeight: FontWeight.w900,
+                                  fontFamily: Constants.fontName,
                                 ),
                               ),
                               Text(
                                 treatment['hospital'],
-                                style: GoogleFonts.elMessiri(
+                                style: TextStyle(
                                   fontSize: Theme.of(context)
                                       .textTheme
                                       .subtitle1
                                       .fontSize,
                                   color: Colors.grey.shade700,
+                                  fontFamily: Constants.fontName,
                                 ),
                               ),
                             ],
@@ -97,7 +98,9 @@ class TreatmentDetailsPage extends StatelessWidget {
                         ),
                         FloatingActionButton(
                           heroTag: 'call',
-                          onPressed: () {},
+                          onPressed: () {
+                            launch('tel:${treatment['phoneNum']}');
+                          },
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
                           backgroundColor: Colors.green,
@@ -108,22 +111,22 @@ class TreatmentDetailsPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     Text(
                       'ساعات العمل : ${treatment['workTime']}',
-                      style: GoogleFonts.elMessiri(
+                      style: TextStyle(
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize + 2,
                         color: Constants.darkColor,
                         fontWeight: FontWeight.w800,
+                        fontFamily: Constants.fontName,
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'رقم الهاتف : ${treatment['phoneNum']}',
-                      style: GoogleFonts.elMessiri(
-                        height: 2,
-                        fontSize:
-                            Theme.of(context).textTheme.subtitle1.fontSize,
-                        color: Theme.of(context).accentColor,
-                      ),
+                      style: Theme.of(context).textTheme.subtitle1.copyWith(
+                            height: 2,
+                            color: Theme.of(context).accentColor,
+                            fontFamily: Constants.fontName,
+                          ),
                     ),
                   ],
                 ),

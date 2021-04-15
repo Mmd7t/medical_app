@@ -21,7 +21,7 @@ class PatientProfilePage extends StatelessWidget {
         } else {
           Users patient = snapshot.data;
           return ProfileTemplate.patient(
-            name: doctor.name,
+            name: patient.name,
             rate: (doctor.rate == null) ? '0' : '${doctor.rate}',
             onTap: () {
               var chatRoomId = ChatsDB()

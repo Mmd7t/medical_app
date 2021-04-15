@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../constants.dart';
 
-class SignBtn extends StatelessWidget {
+class GlobalBtn extends StatelessWidget {
   final String text;
   final Function onClicked;
+  final double width;
 
-  const SignBtn({Key key, this.text, this.onClicked}) : super(key: key);
+  const GlobalBtn({Key key, this.text, this.onClicked, this.width})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +24,7 @@ class SignBtn extends StatelessWidget {
         ),
       ),
       child: MaterialButton(
-        minWidth: MediaQuery.of(context).size.width * 0.9,
+        minWidth: width,
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 16),
         child: Text(
           text,

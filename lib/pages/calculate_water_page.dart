@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/widgets/global_btn.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../constants.dart';
-import 'registration/sign_btn.dart';
 
 class CalculateWaterPage extends StatefulWidget {
   static const String routeName = 'calculateWaterPage';
@@ -61,21 +59,23 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                     child: AnimatedCrossFade(
                       duration: const Duration(milliseconds: 2000),
                       reverseDuration: const Duration(milliseconds: 2000),
-                      firstChild: Text(
+                      firstChild: const Text(
                         'حساب عدد أكواب الماء',
-                        style: GoogleFonts.elMessiri(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Constants.darkColor,
                           fontWeight: FontWeight.bold,
+                          fontFamily: Constants.fontName,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       secondChild: Text(
                         water,
-                        style: GoogleFonts.elMessiri(
-                          fontSize: 22,
+                        style: const TextStyle(
+                          fontSize: 16,
                           color: Constants.darkColor,
                           fontWeight: FontWeight.w900,
+                          fontFamily: Constants.fontName,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -127,27 +127,26 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
 /*------------------------------------------  Button  -------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------*/
                 const SizedBox(height: 40),
-                Container(
+                GlobalBtn(
+                  text: 'احسب',
                   width: size.width * 0.4,
-                  child: SignBtn(
-                    text: 'احسب',
-                    onClicked: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        setState(() {
-                          result = (30 * double.parse(weight)) / 250;
-                          water = result.toStringAsFixed(0);
-                          crossFadeState = CrossFadeState.showSecond;
-                        });
+                  onClicked: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                      setState(() {
+                        result = (30 * double.parse(weight)) / 250;
+                        water =
+                            'عدد اكواب الماء التى يحتاجها جسمك ${result.toStringAsFixed(0)}';
+                        crossFadeState = CrossFadeState.showSecond;
+                      });
 
-                        Timer(const Duration(seconds: 3), () {
-                          setState(() {
-                            crossFadeState = CrossFadeState.showFirst;
-                          });
+                      Timer(const Duration(seconds: 3), () {
+                        setState(() {
+                          crossFadeState = CrossFadeState.showFirst;
                         });
-                      }
-                    },
-                  ),
+                      });
+                    }
+                  },
                 ),
               ],
             ),

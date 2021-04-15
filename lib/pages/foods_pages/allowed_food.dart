@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../../constants.dart';
 
@@ -23,11 +22,11 @@ class AllowedFood extends StatelessWidget {
                   Constants.allowedFoodsmanyTimes.length,
                   (index) => Text(
                     Constants.allowedFoodsmanyTimes[index],
-                    style: GoogleFonts.elMessiri(
-                        height: 1.7,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize,
-                        color: Constants.darkColor),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          height: 1.7,
+                          color: Constants.darkColor,
+                          fontFamily: Constants.fontName,
+                        ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -36,11 +35,11 @@ class AllowedFood extends StatelessWidget {
                   Constants.allowedFoods1or2TimesAday.length,
                   (index) => Text(
                     Constants.allowedFoods1or2TimesAday[index],
-                    style: GoogleFonts.elMessiri(
-                        height: 1.7,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize,
-                        color: Constants.darkColor),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          height: 1.7,
+                          color: Constants.darkColor,
+                          fontFamily: Constants.fontName,
+                        ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -49,11 +48,10 @@ class AllowedFood extends StatelessWidget {
                   Constants.allowedFoods3or4TimesAday.length,
                   (index) => Text(
                     Constants.allowedFoods3or4TimesAday[index],
-                    style: GoogleFonts.elMessiri(
-                        height: 1.7,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize,
-                        color: Constants.darkColor),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        .copyWith(height: 1.7, color: Constants.darkColor),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -62,11 +60,11 @@ class AllowedFood extends StatelessWidget {
                   Constants.allowedFoods2or3TimesAmonth.length,
                   (index) => Text(
                     Constants.allowedFoods2or3TimesAmonth[index],
-                    style: GoogleFonts.elMessiri(
-                        height: 1.7,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize,
-                        color: Constants.darkColor),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          height: 1.7,
+                          color: Constants.darkColor,
+                          fontFamily: Constants.fontName,
+                        ),
                   ),
                 ),
               ],
@@ -80,10 +78,12 @@ class AllowedFood extends StatelessWidget {
   headline(text, context) {
     return Text(
       text,
-      style: GoogleFonts.elMessiri(
-          fontSize: Theme.of(context).textTheme.headline6.fontSize - 2,
-          color: Constants.darkColor,
-          fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: Theme.of(context).textTheme.headline6.fontSize - 2,
+        color: Constants.darkColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: Constants.fontName,
+      ),
     );
   }
 }

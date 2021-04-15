@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
-
 import '../../constants.dart';
 import 'chat_page.dart';
 
@@ -152,18 +150,23 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                 children: [
                   Text(
                     name ?? '',
-                    style: GoogleFonts.elMessiri(
-                        fontSize:
-                            Theme.of(context).textTheme.headline6.fontSize - 2,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.headline6.fontSize - 2,
+                      color: Constants.darkColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: Constants.fontName,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   SizedBox(
                     width: size.width * 0.4,
                     child: Text(
                       '${widget.lastMessage} ',
-                      style: GoogleFonts.elMessiri(color: Colors.grey.shade700),
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontFamily: Constants.fontName,
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),

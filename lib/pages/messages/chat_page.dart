@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart';
 import 'package:medical_app/constants.dart';
 import 'package:medical_app/db/db_chats.dart';
@@ -252,14 +251,12 @@ class _ChatPageState extends State<ChatPage> {
                             (isDoctor.doctor)
                                 ? '${widget.name}'
                                 : 'د / ${widget.name}',
-                            style: GoogleFonts.elMessiri(
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .subtitle1
-                                  .fontSize,
-                              color: Constants.darkColor,
-                              fontWeight: FontWeight.w900,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.subtitle1.copyWith(
+                                      color: Constants.darkColor,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: Constants.fontName,
+                                    ),
                           ),
                         ),
                         trailing: IconButton(

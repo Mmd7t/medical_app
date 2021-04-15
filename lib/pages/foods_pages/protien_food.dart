@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../../constants.dart';
 
@@ -46,27 +45,19 @@ class ProtienFood extends StatelessWidget {
                           children: [
                             Text(
                               Constants.foods[index],
-                              style: GoogleFonts.elMessiri(
-                                  fontSize: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          .fontSize -
-                                      2,
-                                  color: Constants.darkColor,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .fontSize -
+                                    2,
+                                color: Constants.darkColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: Constants.fontName,
+                              ),
                             ),
                             const SizedBox(height: 6),
                             Text(Constants.gramsInFood[index]),
-                            // Text(
-                            //   'مستشفى الحياه',
-                            //   style: GoogleFonts.elMessiri(
-                            //       color: Colors.grey.shade700),
-                            // ),
-                            // Text(
-                            //   '12 ص : 4 م',
-                            //   style: GoogleFonts.elMessiri(
-                            //       color: Colors.grey.shade700),
-                            // ),
                           ],
                         ),
                       ],

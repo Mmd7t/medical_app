@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../constants.dart';
 
 class CustomCard extends StatelessWidget {
   final String name;
   final String rate;
+  final String workspace;
   final Function onTap;
   final UserType userType;
 
-  const CustomCard.patient({this.name, this.onTap, this.rate})
+  const CustomCard.patient({this.name, this.onTap, this.rate, this.workspace})
       : userType = UserType.patient;
-  const CustomCard.doctor({this.name, this.onTap, @required this.rate})
+  const CustomCard.doctor(
+      {this.name, this.onTap, @required this.rate, @required this.workspace})
       : userType = UserType.doctor;
   @override
   Widget build(BuildContext context) {
@@ -48,25 +48,28 @@ class CustomCard extends StatelessWidget {
                 children: [
                   Text(
                     (userType == UserType.doctor) ? 'د / $name' : '$name',
-                    style: GoogleFonts.elMessiri(
+                    style: TextStyle(
                       fontSize:
                           Theme.of(context).textTheme.headline6.fontSize - 3,
                       color: Constants.darkColor,
                       fontWeight: FontWeight.bold,
+                      fontFamily: Constants.fontName,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    (userType == UserType.doctor)
-                        ? 'مستشفى الحياه'
-                        : 'فشل كلوى',
-                    style: GoogleFonts.elMessiri(color: Colors.grey.shade700),
+                    (userType == UserType.doctor) ? '$workspace' : 'فشل كلوى',
+                    style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontFamily: Constants.fontName),
                   ),
                   (userType == UserType.doctor)
                       ? Text(
                           '12 ص : 4 م',
-                          style: GoogleFonts.elMessiri(
-                              color: Colors.grey.shade700),
+                          style: TextStyle(
+                            color: Colors.grey.shade700,
+                            fontFamily: Constants.fontName,
+                          ),
                         )
                       : const SizedBox(),
                 ],

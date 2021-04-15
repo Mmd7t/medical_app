@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/clippers.dart';
 import 'package:medical_app/widgets/doctor_drawer.dart';
 import 'package:medical_app/widgets/patient_drawer.dart';
@@ -32,11 +31,11 @@ class MainTemplate extends StatelessWidget {
             alignment: Alignment.topRight,
             child: Text(
               title,
-              style: GoogleFonts.elMessiri(
-                fontSize: Theme.of(context).textTheme.headline5.fontSize,
-                color: Constants.darkColor,
-                fontWeight: FontWeight.w900,
-              ),
+              style: Theme.of(context).textTheme.headline5.copyWith(
+                    color: Constants.darkColor,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: Constants.fontName,
+                  ),
             ),
           ),
           Positioned(

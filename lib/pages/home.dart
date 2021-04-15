@@ -54,6 +54,7 @@ class Home extends StatelessWidget {
                       DoctorModel doctor = listOfDoctors[index];
                       return CustomCard.doctor(
                         name: doctor.name,
+                        workspace: doctor.workSpace,
                         onTap: () {
                           Navigator.of(context).pushNamed(DoctorPage.routeName,
                               arguments: doctor.id);

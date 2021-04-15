@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../../constants.dart';
 
@@ -21,10 +20,11 @@ class PotassiumFood extends StatelessWidget {
                 Constants.potassiumVegets.length,
                 (index) => Text(
                   Constants.potassiumVegets[index],
-                  style: GoogleFonts.elMessiri(
-                      height: 1.7,
-                      fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
-                      color: Constants.darkColor),
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        height: 1.7,
+                        color: Constants.darkColor,
+                        fontFamily: Constants.fontName,
+                      ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -33,10 +33,11 @@ class PotassiumFood extends StatelessWidget {
                 Constants.potassiumFriuts.length,
                 (index) => Text(
                   Constants.potassiumFriuts[index],
-                  style: GoogleFonts.elMessiri(
-                      height: 1.7,
-                      fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
-                      color: Constants.darkColor),
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        height: 1.7,
+                        color: Constants.darkColor,
+                        fontFamily: Constants.fontName,
+                      ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -45,10 +46,11 @@ class PotassiumFood extends StatelessWidget {
                 Constants.otherPotassiumFoods.length,
                 (index) => Text(
                   Constants.otherPotassiumFoods[index],
-                  style: GoogleFonts.elMessiri(
-                      height: 1.7,
-                      fontSize: Theme.of(context).textTheme.bodyText1.fontSize,
-                      color: Constants.darkColor),
+                  style: Theme.of(context).textTheme.bodyText1.copyWith(
+                        height: 1.7,
+                        color: Constants.darkColor,
+                        fontFamily: Constants.fontName,
+                      ),
                 ),
               ),
             ],
@@ -61,10 +63,11 @@ class PotassiumFood extends StatelessWidget {
   headline(text, context) {
     return Text(
       text,
-      style: GoogleFonts.elMessiri(
-          fontSize: Theme.of(context).textTheme.headline6.fontSize,
-          color: Constants.darkColor,
-          fontWeight: FontWeight.bold),
+      style: Theme.of(context).textTheme.headline6.copyWith(
+            color: Constants.darkColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: Constants.fontName,
+          ),
     );
   }
 }

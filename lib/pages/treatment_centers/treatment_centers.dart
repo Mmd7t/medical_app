@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
-
 import '../../constants.dart';
 import 'treatment_details_page.dart';
 
@@ -54,13 +52,14 @@ class TreatmentCenter extends StatelessWidget {
                                 val['name'],
                                 softWrap: true,
                                 maxLines: 2,
-                                style: GoogleFonts.elMessiri(
-                                    fontSize: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1
-                                        .fontSize,
-                                    color: Constants.darkColor,
-                                    fontWeight: FontWeight.bold),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .copyWith(
+                                      color: Constants.darkColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Constants.fontName,
+                                    ),
                               ),
                             ),
                           ),

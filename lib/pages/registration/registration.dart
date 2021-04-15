@@ -12,7 +12,6 @@ class Registration extends StatefulWidget {
 }
 
 class _RegistrationState extends State<Registration> {
-  Color btnColor = Color(0xFF5987E6);
   String btnText = 'تسجيل دخول';
 
   var _type = RegistrationType.signup;
@@ -30,13 +29,11 @@ class _RegistrationState extends State<Registration> {
                     setState(() {
                       _type = RegistrationType.signup;
                       btnText = 'تسجيل دخول';
-                      btnColor = Color(0xFF5987E6);
                     });
                   } else {
                     setState(() {
                       _type = RegistrationType.login;
                       btnText = 'حساب جديد';
-                      btnColor = Color(0xFFC167DF);
                     });
                   }
                 },

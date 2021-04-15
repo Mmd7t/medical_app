@@ -15,6 +15,19 @@ class DoctorsDB extends DB {
         .delete();
   }
 
+  Future<bool> getDoctorEmail(email) async {
+    final snapShot = await _db
+        .collection(Constants.doctorsCollectionName)
+        .where("email", isEqualTo: email)
+        .get();
+
+    if (snapShot.docs.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   @override
   Stream<DoctorModel> getData() {
     return _db

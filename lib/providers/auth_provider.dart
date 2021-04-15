@@ -50,8 +50,12 @@ class AuthProvider implements Auth {
             workSpace: workSpace,
             token: token));
       } else {
-        await _patientsDB.saveData(
-            Users(id: getUID(), name: name, email: email, username: username));
+        await _patientsDB.saveData(Users(
+            id: getUID(),
+            name: name,
+            email: email,
+            username: username,
+            token: token));
       }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -82,7 +86,18 @@ class AuthProvider implements Auth {
   @override
   signIn(email, pass, context, AuthUserState authUserState) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      if (authUserState == AuthUserState.doctor) {
+        await DoctorsDB().getDoctorEmail(email).then((value) {
+          if (value) {
+            _auth.signInWithEmailAndPassword(email: email, password: pass);
+          } else {
+            showDialoge(
+                context, "انت لست بطبيب\nمن فضلك التزم بسياسات التطبيق");
+          }
+        });
+      } else {
+        _auth.signInWithEmailAndPassword(email: email, password: pass);
+      }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':

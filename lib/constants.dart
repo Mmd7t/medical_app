@@ -8,6 +8,7 @@ class Constants {
   static const String doctorsCollectionName = 'doctors';
   static const String chatsCollectionName = 'chats';
   static const String appName = 'مرضى الفشل الكلوى';
+  static const String fontName = 'elmessiri';
   static const List<String> foods = [
     'صدور الدجاج',
     'سمك التونا',

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import 'package:medical_app/db/db_chats.dart';
-
 import '../../constants.dart';
 
 class DoctorMessages extends StatefulWidget {
@@ -32,7 +30,6 @@ class _DoctorMessagesState extends State<DoctorMessages> {
   @override
   void initState() {
     onScreenLoaded();
-    print('userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr   ${widget.userName}');
     super.initState();
   }
 
@@ -59,8 +56,12 @@ class _DoctorMessagesState extends State<DoctorMessages> {
                       itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {
                         DocumentSnapshot ds = snapshot.data.docs[index];
-                        return ChatRoomListTile(
-                            ds["lastMessage"], ds.id, widget.userName);
+                        if (ds["lastMessage"] != null) {
+                          return ChatRoomListTile(
+                              ds["lastMessage"], ds.id, widget.userName);
+                        } else {
+                          return SizedBox();
+                        }
                       },
                     );
                   }
@@ -116,7 +117,6 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
           ChatsDB().createChatRoom(chatRoomId, chatRoomInfoMap);
           Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatPage(
-              // id: id,
               token: token,
               myUserName: widget.myUsername,
               otherUserName: username,
@@ -150,25 +150,29 @@ class _ChatRoomListTileState extends State<ChatRoomListTile> {
                 children: [
                   Text(
                     name ?? '',
-                    style: GoogleFonts.elMessiri(
-                        fontSize:
-                            Theme.of(context).textTheme.headline6.fontSize - 2,
-                        color: Constants.darkColor,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize:
+                          Theme.of(context).textTheme.headline6.fontSize - 2,
+                      color: Constants.darkColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: Constants.fontName,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   SizedBox(
                     width: size.width * 0.4,
                     child: Text(
-                      '${widget.lastMessage} ',
-                      style: GoogleFonts.elMessiri(color: Colors.grey.shade700),
+                      widget.lastMessage ?? '',
+                      style: TextStyle(
+                        color: Colors.grey.shade700,
+                        fontFamily: Constants.fontName,
+                      ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
                 ],
               ),
-              const Spacer(),
             ],
           ),
         ),

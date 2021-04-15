@@ -20,11 +20,14 @@ import 'package:medical_app/pages/registration/registration.dart';
 import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';
+import 'package:medical_app/providers/israted_provider.dart';
+import 'package:medical_app/providers/num_of_rates_provider.dart';
 import 'package:medical_app/providers/obscure_provider.dart';
+import 'package:medical_app/providers/user_login_type_provider.dart';
 import 'package:provider/provider.dart';
 import 'pages/doctor_page.dart';
 import 'pages/doctor_pages/patients_page.dart';
-import 'pages/global_advices_page.dart';
+import 'pages/foods_pages/global_advices_page.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/auth_provider.dart';
 
@@ -55,37 +58,42 @@ class MyApp extends StatelessWidget {
 /*-----------------------------------  Auth State Provider  ------------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider(
-          create: (context) => context.read<AuthProvider>().authStateChanges,
-          initialData: null,
-        ),
+            create: (context) => context.read<AuthProvider>().authStateChanges,
+            initialData: null),
 /*----------------------------------------------------------------------------------------------*/
 /*----------------------------------  Patient Data Provider  -----------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider(
-          create: (context) => PatientsDB().getData(),
-          initialData: null,
-        ),
+            create: (context) => PatientsDB().getData(), initialData: null),
 /*----------------------------------------------------------------------------------------------*/
 /*----------------------------------  Patient Data Provider  -----------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider(
-          create: (context) => PatientsDB().getAllPatients(),
-          initialData: null,
-        ),
+            create: (context) => PatientsDB().getAllPatients(),
+            initialData: null),
 /*----------------------------------------------------------------------------------------------*/
 /*----------------------------------  Doctor Data Provider  ------------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider<List<DoctorModel>>(
-          create: (context) => DoctorsDB().getAllDoctors(),
-          initialData: null,
-        ),
+            create: (context) => DoctorsDB().getAllDoctors(),
+            initialData: null),
 /*----------------------------------------------------------------------------------------------*/
 /*-----------------------------------  Doctor Data Provider  -----------------------------------*/
 /*----------------------------------------------------------------------------------------------*/
         StreamProvider(
-          create: (context) => DoctorsDB().getData(),
-          initialData: null,
-        ),
+            create: (context) => DoctorsDB().getData(), initialData: null),
+/*----------------------------------------------------------------------------------------------*/
+/*-----------------------------  Doctor Number of Rates Provider  ------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider(create: (context) => NumOfRateProvider()),
+/*----------------------------------------------------------------------------------------------*/
+/*--------------------------------  User Login Type Provider  ----------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider(create: (context) => UserLoginTypeProvider()),
+/*----------------------------------------------------------------------------------------------*/
+/*------------------------------------  Is Rated Provider  -------------------------------------*/
+/*----------------------------------------------------------------------------------------------*/
+        ChangeNotifierProvider(create: (context) => IsRatedProvider()),
       ],
       builder: (context, child) => child,
       child: MaterialApp(

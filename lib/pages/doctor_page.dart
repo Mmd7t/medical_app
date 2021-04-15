@@ -27,6 +27,7 @@ class DoctorPage extends StatelessWidget {
             phoneNum: doctor.phoneNumber,
             workSpace: doctor.workSpace,
             rate: (doctor.rate == null) ? '0' : '${doctor.rate}',
+            numOfRates: doctor.numOfRates.toString(),
             onTap: () {
               var chatRoomId = ChatsDB()
                   .getChatRoomIdByUsernames(doctor.username, patient.username);
@@ -54,6 +55,7 @@ class DoctorPage extends StatelessWidget {
                 username: doctor.username,
                 workSpace: doctor.workSpace,
                 rate: doctor.rate,
+                numOfRates: doctor.numOfRates,
                 id: id,
               ),
             ),

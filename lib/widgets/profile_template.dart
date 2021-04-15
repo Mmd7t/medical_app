@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants.dart';
 
 class ProfileTemplate extends StatelessWidget {
@@ -11,26 +11,29 @@ class ProfileTemplate extends StatelessWidget {
   final Widget fab;
   final String phoneNum;
   final String workSpace;
+  final String numOfRates;
 
-  const ProfileTemplate.doctor({
-    this.name,
-    this.rate,
-    this.onTap,
-    this.isDoctorProfile = false,
-    this.fab,
-    this.phoneNum,
-    this.workSpace,
-  }) : userType = UserType.doctor;
+  const ProfileTemplate.doctor(
+      {this.name,
+      this.rate,
+      this.onTap,
+      this.isDoctorProfile = false,
+      this.fab,
+      this.phoneNum,
+      this.workSpace,
+      this.numOfRates})
+      : userType = UserType.doctor;
 
-  const ProfileTemplate.patient({
-    this.name,
-    this.rate,
-    this.onTap,
-    this.isDoctorProfile = false,
-    this.fab,
-    this.phoneNum,
-    this.workSpace,
-  }) : userType = UserType.patient;
+  const ProfileTemplate.patient(
+      {this.name,
+      this.rate,
+      this.onTap,
+      this.isDoctorProfile = false,
+      this.fab,
+      this.phoneNum,
+      this.workSpace,
+      this.numOfRates})
+      : userType = UserType.patient;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -120,37 +123,42 @@ class ProfileTemplate extends StatelessWidget {
                                 (userType == UserType.doctor)
                                     ? 'د / $name'
                                     : name,
-                                style: GoogleFonts.elMessiri(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .fontSize,
-                                  color: Constants.darkColor,
-                                  fontWeight: FontWeight.w900,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline6
+                                    .copyWith(
+                                      color: Constants.darkColor,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: Constants.fontName,
+                                    ),
                               ),
                             ),
                             Text(
                               (userType == UserType.doctor)
                                   ? 'اخصائى جراحة'
                                   : 'فشل كلوى',
-                              style: GoogleFonts.elMessiri(
-                                fontSize: Theme.of(context)
-                                    .textTheme
-                                    .subtitle1
-                                    .fontSize,
-                                color: Colors.grey.shade700,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1
+                                  .copyWith(
+                                    color: Colors.grey.shade700,
+                                    fontFamily: Constants.fontName,
+                                  ),
                             ),
                           ],
                         ),
+/*---------------------------------------------------------------------------------------*/
+/*---------------------------------  Call & Chat Btns  ----------------------------------*/
+/*---------------------------------------------------------------------------------------*/
                         (isDoctorProfile)
                             ? const SizedBox()
                             : Row(
                                 children: [
                                   FloatingActionButton(
                                     heroTag: 'call',
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      launch('tel:$phoneNum');
+                                    },
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(15)),
@@ -199,7 +207,7 @@ class ProfileTemplate extends StatelessWidget {
                                       ],
                                     ),
                               const SizedBox(width: 40),
-                              const Text('( 2420  تقييم )'),
+                              Text('( ${numOfRates ?? 0}  تقييمات )'),
                             ],
                           )
                         : const SizedBox(),
@@ -208,11 +216,12 @@ class ProfileTemplate extends StatelessWidget {
                       (userType == UserType.doctor)
                           ? 'مقر العمل : $workSpace'
                           : 'نبذة عن المريض',
-                      style: GoogleFonts.elMessiri(
+                      style: TextStyle(
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize + 2,
                         color: Constants.darkColor,
                         fontWeight: FontWeight.w800,
+                        fontFamily: Constants.fontName,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -220,11 +229,12 @@ class ProfileTemplate extends StatelessWidget {
                       (userType == UserType.doctor)
                           ? 'رقم الهاتف : $phoneNum'
                           : 'المريض يعانى من الم فى المعدة و احيانا يشغر بالغثيان و القيئ',
-                      style: GoogleFonts.elMessiri(
+                      style: TextStyle(
                         height: 2,
                         fontSize:
                             Theme.of(context).textTheme.subtitle1.fontSize,
                         color: Constants.darkColor,
+                        fontFamily: Constants.fontName,
                       ),
                     ),
                   ],

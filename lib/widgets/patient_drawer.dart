@@ -7,7 +7,7 @@ import 'package:medical_app/pages/foods_pages/allowed_food.dart';
 import 'package:medical_app/pages/foods_pages/forbidden_food.dart';
 import 'package:medical_app/pages/foods_pages/potassium_food.dart';
 import 'package:medical_app/pages/foods_pages/protien_food.dart';
-import 'package:medical_app/pages/global_advices_page.dart';
+import 'package:medical_app/pages/foods_pages/global_advices_page.dart';
 import 'package:medical_app/pages/messages/chat_messages.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/providers/auth_provider.dart';

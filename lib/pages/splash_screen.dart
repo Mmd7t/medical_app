@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/constants.dart';
-
 import 'landing_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -85,11 +83,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 Image.asset('assets/app_logo.png', width: size.width * 0.5),
                 Text(
                   Constants.appName,
-                  style: GoogleFonts.elMessiri(
-                    color: Constants.darkColor,
-                    fontSize: Theme.of(context).textTheme.headline5.fontSize,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headline5.copyWith(
+                        color: Constants.darkColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: Constants.fontName,
+                      ),
                 ),
               ],
             ),

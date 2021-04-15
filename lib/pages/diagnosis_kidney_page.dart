@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:medical_app/widgets/global_btn.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../constants.dart';
-import 'registration/sign_btn.dart';
 
 class DiagnosisKidneyPage extends StatefulWidget {
   static const String routeName = 'diagnosisKidneyPage';
@@ -38,8 +36,8 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
               children: [
                 const SizedBox(height: 30),
                 Container(
-                  width: size.width * 0.4,
-                  height: size.width * 0.4,
+                  width: size.width * 0.44,
+                  height: size.width * 0.44,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
@@ -53,7 +51,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                   ),
                   child: Container(
                     margin: const EdgeInsets.all(5),
-                    padding: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
@@ -68,19 +66,21 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                       crossFadeState: crossFadeState,
                       firstChild: Text(
                         '$resultData',
-                        style: GoogleFonts.elMessiri(
+                        style: const TextStyle(
                           fontSize: 16,
                           color: Constants.darkColor,
                           fontWeight: FontWeight.bold,
+                          fontFamily: Constants.fontName,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       secondChild: Text(
-                        '$level\nكمية البروتين\n$protien',
-                        style: GoogleFonts.elMessiri(
-                          fontSize: 16,
+                        'انت فى $level و نسبة البروتين التى يحتاجها جسمك $protien',
+                        style: const TextStyle(
+                          fontSize: 14,
                           color: Constants.darkColor,
                           fontWeight: FontWeight.bold,
+                          fontFamily: Constants.fontName,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -91,6 +91,9 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                   key: _formKey,
                   child: Column(
                     children: [
+/*------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Weight TextField  -----------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
@@ -122,6 +125,9 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           },
                         ),
                       ),
+/*------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------  Age TextField  -------------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
@@ -153,6 +159,9 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           },
                         ),
                       ),
+/*------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Keratin TextField  ----------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 45)
                             .copyWith(top: 8),
@@ -206,9 +215,10 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                     ),
                     Text(
                       "ذكر",
-                      style: GoogleFonts.elMessiri(
+                      style: const TextStyle(
                         color: Constants.darkColor,
                         fontWeight: FontWeight.w600,
+                        fontFamily: Constants.fontName,
                       ),
                     ),
                     const SizedBox(width: 35),
@@ -227,60 +237,62 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                     ),
                     Text(
                       "انثى",
-                      style: GoogleFonts.elMessiri(
+                      style: const TextStyle(
                         color: Constants.darkColor,
                         fontWeight: FontWeight.w600,
+                        fontFamily: Constants.fontName,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 10),
-                Container(
+/*------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------  Calculate Button  -----------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
+                GlobalBtn(
+                  text: 'احسب',
                   width: size.width * 0.4,
-                  child: SignBtn(
-                    text: 'احسب',
-                    onClicked: () {
-                      if (_formKey.currentState.validate()) {
-                        _formKey.currentState.save();
-                        if (val == 0) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => Dialog(
-                              child: const Text('من فضلك اختر نوع الجنس'),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
+                  onClicked: () {
+                    if (_formKey.currentState.validate()) {
+                      _formKey.currentState.save();
+                      if (val == 0) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
+                            child: const Text('من فضلك اختر نوع الجنس'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          );
-                        } else if (val == 1) {
-                          setState(() {
-                            result = ((140 - double.parse(age)) *
-                                    double.parse(weight)) /
-                                (double.parse(keratin) * 72);
-                            showInfo(result);
-                            crossFadeState = CrossFadeState.showSecond;
-                          });
-                          Timer(const Duration(seconds: 3), () {
-                            setState(() =>
-                                crossFadeState = CrossFadeState.showFirst);
-                          });
-                        } else {
-                          setState(() {
-                            result = ((140 - double.parse(age)) *
-                                    double.parse(weight) *
-                                    0.58) /
-                                (double.parse(keratin) * 72);
-                            showInfo(result);
-                            crossFadeState = CrossFadeState.showSecond;
-                          });
-                          Timer(const Duration(seconds: 3), () {
-                            setState(() =>
-                                crossFadeState = CrossFadeState.showFirst);
-                          });
-                        }
+                          ),
+                        );
+                      } else if (val == 1) {
+                        setState(() {
+                          result = ((140 - double.parse(age)) *
+                                  double.parse(weight)) /
+                              (double.parse(keratin) * 72);
+                          showInfo(result);
+                          crossFadeState = CrossFadeState.showSecond;
+                        });
+                        Timer(const Duration(seconds: 3), () {
+                          setState(
+                              () => crossFadeState = CrossFadeState.showFirst);
+                        });
+                      } else {
+                        setState(() {
+                          result = ((140 - double.parse(age)) *
+                                  double.parse(weight) *
+                                  0.58) /
+                              (double.parse(keratin) * 72);
+                          showInfo(result);
+                          crossFadeState = CrossFadeState.showSecond;
+                        });
+                        Timer(const Duration(seconds: 3), () {
+                          setState(
+                              () => crossFadeState = CrossFadeState.showFirst);
+                        });
                       }
-                    },
-                  ),
+                    }
+                  },
                 ),
               ],
             ),
@@ -290,6 +302,9 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
     );
   }
 
+/*------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------  Show Results Info Func.  --------------------------------------*/
+/*------------------------------------------------------------------------------------------------------*/
   showInfo(result) {
     if (result < 15) {
       // setState(() {

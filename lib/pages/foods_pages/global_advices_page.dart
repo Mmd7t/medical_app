@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:medical_app/widgets/main_template.dart';
-
-import '../constants.dart';
+import '../../constants.dart';
 
 class GlobalAdvicesPage extends StatelessWidget {
   static const String routeName = 'globalAdvicesPage';
@@ -23,11 +21,11 @@ class GlobalAdvicesPage extends StatelessWidget {
                   Constants.advices.length,
                   (index) => Text(
                     Constants.advices[index],
-                    style: GoogleFonts.elMessiri(
-                        height: 1.7,
-                        fontSize:
-                            Theme.of(context).textTheme.bodyText1.fontSize,
-                        color: Constants.darkColor),
+                    style: Theme.of(context).textTheme.bodyText1.copyWith(
+                          height: 1.7,
+                          color: Constants.darkColor,
+                          fontFamily: Constants.fontName,
+                        ),
                   ),
                 ),
               ],
@@ -41,10 +39,12 @@ class GlobalAdvicesPage extends StatelessWidget {
   headline(text, context) {
     return Text(
       text,
-      style: GoogleFonts.elMessiri(
-          fontSize: Theme.of(context).textTheme.headline6.fontSize - 2,
-          color: Constants.darkColor,
-          fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: Theme.of(context).textTheme.headline6.fontSize - 2,
+        color: Constants.darkColor,
+        fontWeight: FontWeight.bold,
+        fontFamily: Constants.fontName,
+      ),
     );
   }
 }
