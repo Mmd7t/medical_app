@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:math';
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:medical_app/pages/splash_screen.dart';
 import 'package:medical_app/widgets/global_btn.dart';
 import 'package:medical_app/widgets/main_template.dart';
+import 'package:medical_app/widgets/notifications.dart';
 import '../constants.dart';
 
 class CalculateWaterPage extends StatefulWidget {
@@ -17,6 +21,14 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
   String weight;
   double result = 0;
   CrossFadeState crossFadeState = CrossFadeState.showFirst;
+
+  @override
+  void initState() {
+    super.initState();
+    notificationPlugin
+        .setListenerForLowerVersions(onNotificationInLowerVersions);
+    notificationPlugin.setOnNotificationClick(onNotificationClick);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +84,9 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                       secondChild: Text(
                         water,
                         style: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 15,
                           color: Constants.darkColor,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w700,
                           fontFamily: Constants.fontName,
                         ),
                         textAlign: TextAlign.center,
@@ -148,6 +160,62 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                     }
                   },
                 ),
+                const SizedBox(height: 10),
+                (result != 0)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GlobalBtn.icon(
+                            text: 'تذكير',
+                            icon: const Icon(
+                              Icons.alarm_on_outlined,
+                              color: Colors.white,
+                            ),
+                            width: size.width * 0.45,
+                            onClicked: () {
+                              AndroidAlarmManager.periodic(
+                                      Duration(hours: 24 ~/ result),
+                                      Random().nextInt(pow(2, 31).toInt()),
+                                      callback,
+                                      wakeup: true,
+                                      rescheduleOnReboot: true)
+                                  .then(
+                                (value) =>
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('تم تشغيل الاشعارات'),
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          GlobalBtn.icon(
+                            text: 'ايقاف',
+                            icon: const Icon(
+                              Icons.alarm_off_outlined,
+                              color: Colors.white,
+                            ),
+                            width: size.width * 0.45,
+                            onClicked: () {
+                              AndroidAlarmManager.cancel(
+                                      Random().nextInt(pow(2, 31).toInt()))
+                                  .then((value) {
+                                notificationPlugin.cancelAllNotification();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('تم ايقاف الاشعارات'),
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
+                                  ),
+                                );
+                              });
+                            },
+                          ),
+                        ],
+                      )
+                    : const SizedBox(),
               ],
             ),
           ),
@@ -155,4 +223,17 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
       ),
     );
   }
+
+  onNotificationInLowerVersions(ReceivedNotification receivedNotification) {
+    print('Notification Received ${receivedNotification.id}');
+  }
+
+  onNotificationClick(String payload) {
+    print('Payload $payload');
+    Navigator.of(context).pushNamed(SplashScreen.routeName);
+  }
+}
+
+void callback() {
+  notificationPlugin.showNotification();
 }

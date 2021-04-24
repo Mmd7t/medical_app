@@ -33,10 +33,6 @@ class AuthProvider implements Auth {
 /*--------------------------------------  Sign Up  ---------------------------------------*/
 /*----------------------------------------------------------------------------------------*/
 
-  getToken() async {
-    return await _messaging.getToken();
-  }
-
   @override
   signUp(name, username, email, pass, context, AuthUserState authUserState,
       {phoneNumer, workSpace}) async {
@@ -90,17 +86,27 @@ class AuthProvider implements Auth {
   signIn(email, pass, context, AuthUserState authUserState) async {
     try {
       if (authUserState == AuthUserState.doctor) {
-        await DoctorsDB().getDoctorEmail(email).then((value) {
+        await PatientsDB().getPatientEmail(email).then((value) async {
           if (value) {
-            Provider.of<DoctorProvider>(context, listen: false).switchDoctor();
-            _auth.signInWithEmailAndPassword(email: email, password: pass);
+            throw FirebaseAuthException(code: 'not-a-doctor');
           } else {
-            showDialoge(
-                context, "انت لست بطبيب\nمن فضلك التزم بسياسات التطبيق");
+            await _auth
+                .signInWithEmailAndPassword(email: email, password: pass)
+                .then(
+                  (value) => Provider.of<DoctorProvider>(context, listen: false)
+                      .switchDoctor(),
+                );
           }
         });
       } else {
-        _auth.signInWithEmailAndPassword(email: email, password: pass);
+        await DoctorsDB().getDoctorEmail(email).then((value) async {
+          if (value) {
+            throw FirebaseAuthException(code: 'not-a-patient');
+          } else {
+            await _auth.signInWithEmailAndPassword(
+                email: email, password: pass);
+          }
+        });
       }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -116,11 +122,18 @@ class AuthProvider implements Auth {
         case 'user-disabled':
           showDialoge(context, "تم مسح هذا المستخدم");
           break;
+        case 'not-a-doctor':
+          showDialoge(context, "انت لست بطبيب\nمن فضلك التزم بسياسات التطبيق");
+          break;
+        case 'not-a-patient':
+          showDialoge(context, "انت لست بمريض\nمن فضلك التزم بسياسات التطبيق");
+          break;
         default:
           showDialoge(context, "حدث خطأ\nمن فضلك حاول التسجيل مرة اخرى");
           break;
       }
     } catch (e) {
+      showDialoge(context, "حدث خطأ\nمن فضلك حاول التسجيل مرة اخرى");
       print(e);
     }
   }

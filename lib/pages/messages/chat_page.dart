@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medical_app/constants.dart';
@@ -11,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:random_string/random_string.dart';
 
 class ChatPage extends StatefulWidget {
-  static const String routeName = 'chatPage';
   final String myUserName;
   final String otherUserName;
   final String name;
@@ -36,7 +34,6 @@ class _ChatPageState extends State<ChatPage> {
   Stream messageStream;
   TextEditingController messageTextEdittingController = TextEditingController();
   ScrollController controller = ScrollController();
-  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   getInfo() {
     chatRoomId = ChatsDB()
         .getChatRoomIdByUsernames(widget.myUserName, widget.otherUserName);
@@ -185,20 +182,6 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     doThisOnLaunch();
     super.initState();
-    controller.jumpTo(controller.position.maxScrollExtent);
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ChatPage(
-            myUserName: widget.myUserName,
-            otherUserName: widget.otherUserName,
-            name: widget.name,
-            token: widget.token,
-            myname: widget.myname,
-          ),
-        ),
-      );
-    });
   }
 
 /*-------------------------------------------------------------------------------------------------------*/
@@ -295,6 +278,11 @@ class _ChatPageState extends State<ChatPage> {
                                   heroTag: 'chat',
                                   onPressed: () {
                                     addMessage(true);
+                                    controller.animateTo(
+                                        controller.position.maxScrollExtent,
+                                        curve: Curves.easeInOut,
+                                        duration:
+                                            const Duration(milliseconds: 600));
                                   },
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12)),

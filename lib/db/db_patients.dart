@@ -24,6 +24,19 @@ class PatientsDB extends DB {
         .map((event) => Users.fromMap(event.data()));
   }
 
+  Future<bool> getPatientEmail(email) async {
+    final snapShot = await _db
+        .collection(Constants.patientsCollectionName)
+        .where("email", isEqualTo: email)
+        .get();
+
+    if (snapShot.docs.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Stream<Users> getPatient(id) {
     return _db
         .collection(Constants.patientsCollectionName)

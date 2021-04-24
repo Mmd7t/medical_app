@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:medical_app/pages/calculate_water_page.dart';
 import 'package:medical_app/pages/doctor_page.dart';
 import 'package:medical_app/pages/doctor_pages/doctor_profile.dart';
 import 'package:medical_app/pages/messages/chat_messages.dart';
-import 'package:medical_app/pages/messages/chat_page.dart';
 import 'package:medical_app/pages/diagnosis_kidney_page.dart';
 import 'package:medical_app/pages/foods_pages/allowed_food.dart';
 import 'package:medical_app/pages/foods_pages/forbidden_food.dart';
@@ -31,10 +31,20 @@ import 'pages/doctor_pages/patients_page.dart';
 import 'pages/foods_pages/global_advices_page.dart';
 import 'providers/doctor_provider.dart';
 import 'providers/auth_provider.dart';
+import 'widgets/notifications.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print("Handling a background message ${message.messageId}");
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await AndroidAlarmManager.initialize();
   runApp(MyApp());
 }
 
@@ -49,6 +59,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    notificationPlugin.showNotification();
     _fcm.requestPermission();
     _fcm.setForegroundNotificationPresentationOptions(
         alert: true, badge: true, sound: true);
@@ -56,6 +67,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        notificationPlugin.showMessageNotification(
+            notification.title, notification.body);
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      print('dataaaaaaaaaaaaaaaaaaaaaaaaaaaaa ${event.from}');
+    });
     return MultiProvider(
       providers: [
 /*----------------------------------------------------------------------------------------------*/
@@ -132,7 +155,6 @@ class _MyAppState extends State<MyApp> {
           SplashScreen.routeName: (context) => SplashScreen(),
           LandingPage.routeName: (context) => LandingPage(),
           Home.routeName: (context) => Home(),
-          ChatPage.routeName: (context) => ChatPage(),
           ChatMessages.routeName: (context) => ChatMessages(),
           DoctorPage.routeName: (context) => DoctorPage(),
           TreatmentCenter.routeName: (context) => TreatmentCenter(),
