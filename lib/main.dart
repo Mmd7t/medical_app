@@ -19,6 +19,7 @@ import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/landing_page.dart';
 import 'package:medical_app/pages/registration/registration.dart';
 import 'package:medical_app/pages/splash_screen.dart';
+import 'package:medical_app/pages/treatment_centers/map.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_centers.dart';
 import 'package:medical_app/pages/treatment_centers/treatment_details_page.dart';
 import 'package:medical_app/providers/israted_provider.dart';
@@ -168,6 +169,7 @@ class _MyAppState extends State<MyApp> {
           DoctorProfile.routeName: (context) => DoctorProfile(),
           GlobalAdvicesPage.routeName: (context) => GlobalAdvicesPage(),
           PatientProfilePage.routeName: (context) => PatientProfilePage(),
+          MapPage.routeName: (context) => MapPage(),
         },
       ),
     );

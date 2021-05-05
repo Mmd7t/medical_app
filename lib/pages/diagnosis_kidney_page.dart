@@ -273,7 +273,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           showInfo(result);
                           crossFadeState = CrossFadeState.showSecond;
                         });
-                        Timer(const Duration(seconds: 3), () {
+                        Timer(const Duration(seconds: 90), () {
                           setState(
                               () => crossFadeState = CrossFadeState.showFirst);
                         });
@@ -286,7 +286,7 @@ class _DiagnosisKidneyPageState extends State<DiagnosisKidneyPage> {
                           showInfo(result);
                           crossFadeState = CrossFadeState.showSecond;
                         });
-                        Timer(const Duration(seconds: 3), () {
+                        Timer(const Duration(seconds: 90), () {
                           setState(
                               () => crossFadeState = CrossFadeState.showFirst);
                         });

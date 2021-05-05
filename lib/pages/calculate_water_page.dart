@@ -152,7 +152,7 @@ class _CalculateWaterPageState extends State<CalculateWaterPage> {
                         crossFadeState = CrossFadeState.showSecond;
                       });
 
-                      Timer(const Duration(seconds: 3), () {
+                      Timer(const Duration(seconds: 90), () {
                         setState(() {
                           crossFadeState = CrossFadeState.showFirst;
                         });

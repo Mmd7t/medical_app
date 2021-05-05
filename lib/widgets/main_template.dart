@@ -86,10 +86,14 @@ class MainTemplate extends StatelessWidget {
               clipper: MyClipper(),
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Theme.of(context).accentColor,
-                    Constants.color2,
-                  ], begin: Alignment.centerLeft, end: Alignment.centerRight),
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).accentColor,
+                      Constants.color2,
+                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                  ),
                 ),
                 padding: const EdgeInsets.only(top: 10),
                 child: ClipPath(

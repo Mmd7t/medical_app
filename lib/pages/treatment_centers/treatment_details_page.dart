@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/pages/treatment_centers/map.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
 
@@ -51,7 +52,7 @@ class TreatmentDetailsPage extends StatelessWidget {
               child: Container(
                 width: size.width,
                 height: size.height * 0.7,
-                padding: const EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(
@@ -64,47 +65,61 @@ class TreatmentDetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                treatment['name'],
-                                style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                          .textTheme
-                                          .headline6
-                                          .fontSize -
-                                      3,
-                                  color: Constants.darkColor,
-                                  fontWeight: FontWeight.w900,
-                                  fontFamily: Constants.fontName,
-                                ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              treatment['name'],
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .fontSize -
+                                    3,
+                                color: Constants.darkColor,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: Constants.fontName,
                               ),
-                              Text(
-                                treatment['hospital'],
-                                style: TextStyle(
-                                  fontSize: Theme.of(context)
-                                      .textTheme
-                                      .subtitle1
-                                      .fontSize,
-                                  color: Colors.grey.shade700,
-                                  fontFamily: Constants.fontName,
-                                ),
+                            ),
+                            Text(
+                              treatment['hospital'],
+                              style: TextStyle(
+                                fontSize: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1
+                                    .fontSize,
+                                color: Colors.grey.shade700,
+                                fontFamily: Constants.fontName,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        FloatingActionButton(
-                          heroTag: 'call',
-                          onPressed: () {
-                            launch('tel:${treatment['phoneNum']}');
-                          },
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15)),
-                          backgroundColor: Colors.green,
-                          child: const Icon(Icons.call_outlined),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FloatingActionButton(
+                              heroTag: 'call',
+                              onPressed: () {
+                                launch('tel:${treatment['phoneNum']}');
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              backgroundColor: Colors.green,
+                              child: const Icon(Icons.call_outlined),
+                            ),
+                            const SizedBox(width: 8),
+                            FloatingActionButton(
+                              heroTag: 'position',
+                              onPressed: () => Navigator.of(context).pushNamed(
+                                  MapPage.routeName,
+                                  arguments: index),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15)),
+                              backgroundColor: Theme.of(context).accentColor,
+                              child: const Icon(Icons.pin_drop_outlined),
+                            ),
+                          ],
                         ),
                       ],
                     ),

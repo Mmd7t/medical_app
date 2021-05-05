@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/widgets/foods_tile.dart';
 import 'package:medical_app/widgets/main_template.dart';
 import '../../constants.dart';
 
@@ -18,39 +19,30 @@ class PotassiumFood extends StatelessWidget {
               headline('خضروات غنية بالبوتاسيوم', context),
               ...List.generate(
                 Constants.potassiumVegets.length,
-                (index) => Text(
-                  Constants.potassiumVegets[index],
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        height: 1.7,
-                        color: Constants.darkColor,
-                        fontFamily: Constants.fontName,
-                      ),
+                (index) => FoodsTile(
+                  img: 'assets/food/potassium/vegets_${index + 1}.jpg',
+                  title: Constants.potassiumVegets[index],
+                  isPotassiumFood: true,
                 ),
               ),
               const SizedBox(height: 10),
               headline('فواكه غنية بالبوتاسيوم', context),
               ...List.generate(
                 Constants.potassiumFriuts.length,
-                (index) => Text(
-                  Constants.potassiumFriuts[index],
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        height: 1.7,
-                        color: Constants.darkColor,
-                        fontFamily: Constants.fontName,
-                      ),
+                (index) => FoodsTile(
+                  img: 'assets/food/potassium/fruit_${index + 1}.jpg',
+                  title: Constants.potassiumFriuts[index],
+                  isPotassiumFood: true,
                 ),
               ),
               const SizedBox(height: 10),
               headline('أغذية اخرى غنية بالبوتاسيوم', context),
               ...List.generate(
                 Constants.otherPotassiumFoods.length,
-                (index) => Text(
-                  Constants.otherPotassiumFoods[index],
-                  style: Theme.of(context).textTheme.bodyText1.copyWith(
-                        height: 1.7,
-                        color: Constants.darkColor,
-                        fontFamily: Constants.fontName,
-                      ),
+                (index) => FoodsTile(
+                  img: 'assets/food/potassium/other_${index + 1}.jpg',
+                  title: Constants.otherPotassiumFoods[index],
+                  isPotassiumFood: true,
                 ),
               ),
             ],

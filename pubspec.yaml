@@ -42,6 +42,7 @@ dependencies:
   android_alarm_manager: ^2.0.0
   flutter_local_notifications: ^5.0.0+1
   rxdart: ^0.25.0
+  google_maps_flutter: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,7 @@ flutter:
   assets:
     - assets/
     - assets/food/
+    - assets/food/potassium/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
